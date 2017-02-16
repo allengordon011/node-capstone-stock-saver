@@ -22,8 +22,7 @@
     "hyperdev",
     "express"
   ],
-  "license": "MIT"
-  },
+  "license": "MIT",
   "homepage": "https://github.com/trig010/node-capstone-stock-trax#readme",
   "devDependencies": {
     "chai": "^3.5.0",
