@@ -114,7 +114,6 @@ router.put('/:username', passport.authenticate('basic', {session: false}), (req,
       return res.status(422).json({message: 'Missing field: username'});
     }
 
-    // let {username, password} = req.body;
     let {username} = req.body;
 
 
@@ -127,22 +126,6 @@ router.put('/:username', passport.authenticate('basic', {session: false}), (req,
     if (username === '') {
       return res.status(422).json({message: 'Incorrect field length: username'});
     }
-
-    // if (!(password)) {
-    //   return res.status(422).json({message: 'Missing field: password'});
-    // }
-    //
-    // if (typeof password !== 'string') {
-    //   return res.status(422).json({message: 'Incorrect field type: password'});
-    // }
-    //
-    // password = password.trim();
-    //
-    // if (password === '') {
-    //   return res.status(422).json({message: 'Incorrect field length: password'});
-    // }
-
-    // check for existing user and password
 
     return User
       .find({username})
@@ -164,20 +147,56 @@ router.put('/:username', passport.authenticate('basic', {session: false}), (req,
       })
 });
 
-    // router.put('/:password', (req, res) => {
-    //     return User
-    //     .find({password})
-    //     .count()
-    //     .exec()
-    //     .then(count => {
-    //       if (count > 0) {
-    //         return res.status(422).json({message: 'password must be different'});
-    //       }
-    //
-    //
-    //     // if no existing user, hash password
-    //     return User.hashPassword(password)
-    //     .then(hash => {
-    // })
+//     router.put('/:username/:password', passport.authenticate('basic', {session: false}), (req, res) => {
+//
+//     if (!('password') in req.body) {
+//       return res.status(422).json({message: 'Missing field: password'});
+//     }
+//
+//     let {password} = req.body;
+//
+//     if (typeof password !== 'string') {
+//       return res.status(422).json({message: 'Incorrect field type: password'});
+//     }
+//
+//     password = password.trim();
+//
+//     if (password === '') {
+//       return res.status(422).json({message: 'Incorrect field length: password'});
+//     }
+//
+//     return User
+//     //   .find({password})
+//     //   .count()
+//     //   .exec()
+//     //   .then(count => {
+//     //     if (count > 0) {
+//     //       return res.status(422).json({message: 'password must be different'});
+//     //     } else {
+//          .find({username: req.params.username})
+//          .exec()
+//          .then(user => {
+//              let newPassword = User.hashPassword(req.body.password)
+//              User.findByIdAndUpdate(user[0]._id, {$set: {password: newPassword}})
+//              .exec()
+//              .then(updatedUser => res.status(204).json(updatedUser.apiRepr()))
+//              .catch(err => res.status(500).json({message: 'Something went wrong'}));
+//         })
+// })
+
+    //**should only allow a user to delete their own login
+    router.delete('/:username', passport.authenticate('basic', {session: false}), (req, res) => {
+        return User.find({username: req.params.username})
+        .exec()
+        .then(user => {
+            console.log(user)
+            User.findByIdAndRemove(user[0]._id)
+            .exec()
+            .then(() => {
+              console.log(`Deleted user ${req.params.username}`);
+              res.status(204).end();
+          })
+        })
+    })
 
 module.exports = {router};
