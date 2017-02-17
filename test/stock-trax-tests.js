@@ -17,12 +17,28 @@ describe('Stock Trax', function(){
       return closeServer();
     });
 
-    it('should load the HTML file from the root url', function(){
+    it('should load the index.html file from the root url', function(){
         return chai.request(app)
         .get('/')
         .then(function(res) {
             res.should.have.status(200);
             res.should.be.html;
+        });
+    });
+    it('should load the stocktrax.html file from the stocktrax url', function(){
+        return chai.request(app)
+        .get('/stocktrax')
+        .then(function(res) {
+            res.should.have.status(200);
+            res.should.be.html;
+        });
+    });
+    it('should return users', function(){
+        return chai.request(app)
+        .get('/users')
+        .then(function(res) {
+            res.should.have.status(200);
+            res.should.be.json;
         });
     });
 })
