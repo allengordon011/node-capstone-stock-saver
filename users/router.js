@@ -9,28 +9,31 @@ const router = express.Router();
 
 router.use(jsonParser);
 
-
-const strategy = new BasicStrategy(
-  (username, password, cb) => {
-    User
-      .findOne({username})
-      .exec()
-      .then(user => {
-        if (!user) {
-          return cb(null, false, {
-            message: 'Incorrect username'
-          });
-        }
-        if (user.password !== password) {
-          return cb(null, false, 'Incorrect password');
-        }
-        return cb(null, user);
-      })
-      .catch(err => cb(err))
+const basicStrategy = new BasicStrategy(function(username, password, callback) {
+  let user;
+  User
+    .findOne({username: username})
+    .exec()
+    .then(_user => {
+      user = _user;
+      if (!user) {
+        return callback(null, false, {message: 'Incorrect username'});
+      }
+      return user.validatePassword(password);
+    })
+    .then(isValid => {
+      if (!isValid) {
+        return callback(null, false, {message: 'Incorrect password'});
+      }
+      else {
+        return callback(null, user)
+      }
+    });
 });
 
-passport.use(strategy);
 
+passport.use(basicStrategy);
+router.use(passport.initialize());
 
 router.post('/', (req, res) => {
   if (!req.body) {
@@ -84,7 +87,7 @@ router.post('/', (req, res) => {
         .create({
           username: username,
           password: hash,
-          stox: {}
+          stox: []
         })
     })
     .then(user => {
@@ -95,50 +98,86 @@ router.post('/', (req, res) => {
     });
 });
 
-// never expose all your users like below in a prod application
-// we're just doing this so we have a quick way to see
-// if we're creating users. keep in mind, you can also
-// verify this in the Mongo shell.
-router.get('/', (req, res) => {
-  return User
-    .find()
-    .exec()
-    .then(users => res.json(users.map(user => user.apiRepr())))
-    .catch(err => console.log(err) && res.status(500).json({message: 'Internal server error'}));
-});
 
-
-// NB: at time of writing, passport uses callbacks, not promises
-const basicStrategy = new BasicStrategy(function(username, password, callback) {
-  let user;
-  User
-    .findOne({username: username})
-    .exec()
-    .then(_user => {
-      user = _user;
-      if (!user) {
-        return callback(null, false, {message: 'Incorrect username'});
-      }
-      return user.validatePassword(password);
-    })
-    .then(isValid => {
-      if (!isValid) {
-        return callback(null, false, {message: 'Incorrect password'});
-      }
-      else {
-        return callback(null, user)
-      }
-    });
-});
-
-
-passport.use(basicStrategy);
-router.use(passport.initialize());
-
-router.get('/me',
+router.get('/:username',
   passport.authenticate('basic', {session: false}),
   (req, res) => res.json({user: req.user.apiRepr()})
 );
 
+
+router.put('/:username', passport.authenticate('basic', {session: false}), (req, res) => {
+    if (!req.body) {
+      return res.status(400).json({message: 'No request body'});
+    }
+
+    if (!('username' in req.body)) {
+      return res.status(422).json({message: 'Missing field: username'});
+    }
+
+    // let {username, password} = req.body;
+    let {username} = req.body;
+
+
+    if (typeof username !== 'string') {
+      return res.status(422).json({message: 'Incorrect field type: username'});
+    }
+
+    username = username.trim();
+
+    if (username === '') {
+      return res.status(422).json({message: 'Incorrect field length: username'});
+    }
+
+    // if (!(password)) {
+    //   return res.status(422).json({message: 'Missing field: password'});
+    // }
+    //
+    // if (typeof password !== 'string') {
+    //   return res.status(422).json({message: 'Incorrect field type: password'});
+    // }
+    //
+    // password = password.trim();
+    //
+    // if (password === '') {
+    //   return res.status(422).json({message: 'Incorrect field length: password'});
+    // }
+
+    // check for existing user and password
+
+    return User
+      .find({username})
+      .count()
+      .exec()
+      .then(count => {
+        if (count > 0) {
+          return res.status(422).json({message: 'username already taken'});
+      } else {
+         User.find({username: req.params.username})
+         .exec()
+         .then(user => {
+             User.findByIdAndUpdate(user[0]._id, {$set: {username: username}})
+             .exec()
+             .then(updatedUser => res.status(204).json(updatedUser.apiRepr()))
+             .catch(err => res.status(500).json({message: 'Something went wrong'}));
+        })
+      }
+      })
+});
+
+    // router.put('/:password', (req, res) => {
+    //     return User
+    //     .find({password})
+    //     .count()
+    //     .exec()
+    //     .then(count => {
+    //       if (count > 0) {
+    //         return res.status(422).json({message: 'password must be different'});
+    //       }
+    //
+    //
+    //     // if no existing user, hash password
+    //     return User.hashPassword(password)
+    //     .then(hash => {
+    // })
 
 module.exports = {router};
