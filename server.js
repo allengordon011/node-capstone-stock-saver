@@ -26,8 +26,8 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
 });
 
-app.get('/stocktrax', (req, res) => {
-    res.sendFile(__dirname + '/public/stocktrax.html');
+app.get('/stocksaver', (req, res) => {
+    res.sendFile(__dirname + '/public/stocksaver.html');
 });
 
 // referenced by both runServer and closeServer. closeServer

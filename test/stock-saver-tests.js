@@ -34,7 +34,7 @@ function tearDownDb() {
     return mongoose.connection.dropDatabase();
 }
 
-describe('Stock Trax API', function() {
+describe('Stock Saver API', function() {
     before(function() {
         return runServer(TEST_DATABASE_URL);
     });
@@ -56,8 +56,8 @@ describe('Stock Trax API', function() {
                 res.should.be.html;
             });
         });
-        it('should load the stocktrax.html file from the stocktrax url', function() {
-            return chai.request(app).get('/stocktrax').then(function(res) {
+        it('should load the stocksaver.html file from the stocksaver url', function() {
+            return chai.request(app).get('/stocksaver').then(function(res) {
                 res.should.have.status(200);
                 res.should.be.html;
             });

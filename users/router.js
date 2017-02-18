@@ -45,7 +45,7 @@ router.post('/', (req, res) => {
     return res.status(422).json({message: 'Missing field: username'});
   }
 
-  let {username, password, stox} = req.body;
+  let {username, password, stocks} = req.body;
 
   if (typeof username !== 'string') {
     return res.status(422).json({message: 'Incorrect field type: username'});
@@ -78,6 +78,7 @@ router.post('/', (req, res) => {
     .exec()
     .then(count => {
       if (count > 0) {
+          console.log('USER DUPLICATE')
         return res.status(422).json({message: 'username already taken'});
       }
       // if no existing user, hash password
@@ -88,7 +89,7 @@ router.post('/', (req, res) => {
         .create({
           username: username,
           password: hash,
-          stox: stox
+          stocks: stocks
         })
     })
     .then(user => {
@@ -213,23 +214,23 @@ router.put('/:username', passport.authenticate('basic', {session: false}), (req,
     })
 
 //get a user's stocks
-    router.get('/:username/stox', (req, res) => {
+    router.get('/:username/stocks', (req, res) => {
         return User.find({username: req.params.username})
         .exec()
         .then(user => {
-                res.status(200).json(user[0].stox)
+                res.status(200).json(user[0].stocks)
         })
     })
 
 //edit a user's stocks *change to findOneandUpdate?
-    router.put('/:username/stox', passport.authenticate('basic', {session: false}), (req, res) => {
+    router.put('/:username/stocks', passport.authenticate('basic', {session: false}), (req, res) => {
         if(req.params.username !== req.user.username) {
             return res.status(404).json({message: 'not your user'})
         } else {
         return User.find({username: req.params.username})
         .exec()
         .then(user => {
-            User.findByIdAndUpdate(user[0]._id, {$push: {stox: req.body.stox}})
+            User.findByIdAndUpdate(user[0]._id, {$push: {stocks: req.body.stocks}})
                 // , {safe: true, upsert: true, new : true})
             .exec()
             .then(updatedUser => res.status(204).json(updatedUser.apiRepr()))

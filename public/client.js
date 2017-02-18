@@ -1,7 +1,0 @@
-function createUser() {
-
-}
-
-function loginUser() {
-
-}

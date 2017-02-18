@@ -4,13 +4,13 @@ const mongoose = require('mongoose');
 const UserSchema = mongoose.Schema({
   username: {type: String, required: true, unique: true},
   password: {type: String, required: true},
-  stox: [String]
+  stocks: [String]
 });
 
 UserSchema.methods.apiRepr = function() {
   return {
     username: this.username || '',
-    stox: this.stox || []
+    stox: this.stocks || []
   };
 }
 
