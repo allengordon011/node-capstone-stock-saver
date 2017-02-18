@@ -212,16 +212,30 @@ router.put('/:username', passport.authenticate('basic', {session: false}), (req,
     }
     })
 
+//get a user's stocks
     router.get('/:username/stox', (req, res) => {
         return User.find({username: req.params.username})
         .exec()
         .then(user => {
-            User.findById(user[0]._id)
-            .exec()
-            .then(() => {
                 res.status(200).json(user[0].stox)
-            })
         })
     })
+
+//edit a user's stocks *change to findOneandUpdate?
+    router.put('/:username/stox', passport.authenticate('basic', {session: false}), (req, res) => {
+        if(req.params.username !== req.user.username) {
+            return res.status(404).json({message: 'not your user'})
+        } else {
+        return User.find({username: req.params.username})
+        .exec()
+        .then(user => {
+            User.findByIdAndUpdate(user[0]._id, {$push: {stox: req.body.stox}})
+                // , {safe: true, upsert: true, new : true})
+            .exec()
+            .then(updatedUser => res.status(204).json(updatedUser.apiRepr()))
+            .catch(err => res.status(500).json({message: 'Something went wrong'}));
+            })
+        }
+   })
 
 module.exports = {router};
