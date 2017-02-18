@@ -35,6 +35,7 @@ const basicStrategy = new BasicStrategy(function(username, password, callback) {
 passport.use(basicStrategy);
 router.use(passport.initialize());
 
+//user creation
 router.post('/', (req, res) => {
   if (!req.body) {
     return res.status(400).json({message: 'No request body'});
@@ -44,7 +45,7 @@ router.post('/', (req, res) => {
     return res.status(422).json({message: 'Missing field: username'});
   }
 
-  let {username, password} = req.body;
+  let {username, password, stox} = req.body;
 
   if (typeof username !== 'string') {
     return res.status(422).json({message: 'Incorrect field type: username'});
@@ -87,7 +88,7 @@ router.post('/', (req, res) => {
         .create({
           username: username,
           password: hash,
-          stox: []
+          stox: stox
         })
     })
     .then(user => {
@@ -98,13 +99,19 @@ router.post('/', (req, res) => {
     });
 });
 
-
+//find user by username
 router.get('/:username',
   passport.authenticate('basic', {session: false}),
-  (req, res) => res.json({user: req.user.apiRepr()})
-);
+  (req, res) => {
+    //   console.log(req.user)
+      if(req.params.username !== req.user.username) {
+          return res.status(404).json({message: 'not your user'})
+      } else {
+      res.json({user: req.user.apiRepr()})
+  }
+});
 
-
+//edit username by username
 router.put('/:username', passport.authenticate('basic', {session: false}), (req, res) => {
     if (!req.body) {
       return res.status(400).json({message: 'No request body'});
@@ -147,6 +154,7 @@ router.put('/:username', passport.authenticate('basic', {session: false}), (req,
       })
 });
 
+//edit password by username
 //     router.put('/:username/:password', passport.authenticate('basic', {session: false}), (req, res) => {
 //
 //     if (!('password') in req.body) {
@@ -184,18 +192,35 @@ router.put('/:username', passport.authenticate('basic', {session: false}), (req,
 //         })
 // })
 
-    //**should only allow a user to delete their own login
+//delete user by username
+//**should only allow a user to delete their own login
     router.delete('/:username', passport.authenticate('basic', {session: false}), (req, res) => {
+        if(req.params.username !== req.user.username) {
+            return res.status(404).json({message: 'not your user'})
+        } else {
         return User.find({username: req.params.username})
         .exec()
         .then(user => {
-            console.log(user)
+            // console.log(user)
             User.findByIdAndRemove(user[0]._id)
             .exec()
             .then(() => {
               console.log(`Deleted user ${req.params.username}`);
               res.status(204).end();
           })
+        })
+    }
+    })
+
+    router.get('/:username/stox', (req, res) => {
+        return User.find({username: req.params.username})
+        .exec()
+        .then(user => {
+            User.findById(user[0]._id)
+            .exec()
+            .then(() => {
+                res.status(200).json(user[0].stox)
+            })
         })
     })
 
