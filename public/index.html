@@ -16,18 +16,19 @@
 <body>
     <main>
         <h1>Stock Saver</h1>
-        <form id="js-user-form">
+        <form id="js-user-form" action="/login" method="post">
             <ul class=flex-container>
-                <label for="login">Login/Create User</label>
+                <label for="username">Username:</label>
 
                 <li>
-                    <input id="username" placeholder="Enter username"></input>
+                    <input type="text" name="username" placeholder="Enter username"></input>
+                </li>
+                <label for="password">Password:</label>
+                <li>
+                    <input type="password" name="password" placeholder="Enter password"></input>
                 </li>
                 <li>
-                    <input id="password" placeholder="Enter password"></input>
-                </li>
-                <li>
-                    <button id="user" type="submit">Submit</button></li>
+                    <button id="user" value="Log In" type="submit">Submit</button></li>
             </ul>
         </form>
     </main>

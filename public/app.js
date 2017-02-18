@@ -1,14 +1,15 @@
 $('#js-user-form').submit(function(event) {
     event.preventDefault();
     // console.log(event.target.username.value)
+    // console.log($('.username').val())
 
     let obj = {
-        username: $('#username').val(),
-        password: $('#password').val()
+        username: event.target.username.value,
+        password: event.target.password.value
     }
     //clear form fields
-    $('#username, textarea').val('');
-    $('#password, textarea').val('');
+    $('input, textarea').val('');
+    // $('#password, textarea').val('');
 
     $.ajax({
         type: 'POST',
@@ -17,10 +18,10 @@ $('#js-user-form').submit(function(event) {
         contentType: "application/json",
         dataType: "json",
         success: function(data) {
-            console.log("User added!");
-
+            console.log(data, "User added!");
         }
     }).fail(function(err) {
-    alert( err.responseJSON.message );
+        console.log(err)
+    // alert( err.responseJSON.message );
     });
 });

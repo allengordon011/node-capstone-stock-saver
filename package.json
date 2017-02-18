@@ -8,13 +8,16 @@
     "test": "mocha ./test"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.0",
     "body-parser": "^1.15.2",
     "express": "^4.12.4",
-    "morgan": "^1.7.0",
-    "bcryptjs": "^2.4.0",
+    "express-session": "^1.15.1",
     "mongoose": "^4.7.4",
+    "morgan": "^1.7.0",
     "passport": "^0.3.2",
-    "passport-http": "^0.3.0"
+    "passport-http": "^0.3.0",
+    "passport-local": "^1.0.0",
+    "passport-session": "^1.0.2"
   },
   "repository": {
     "type": "git",
@@ -24,13 +27,13 @@
     "node",
     "hyperdev",
     "express"
-],
+  ],
   "license": "MIT",
   "homepage": "https://github.com/trig010/node-capstone-stock-trax#readme",
   "devDependencies": {
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
     "mocha": "^3.1.2"
-},
+  },
   "author": "Allen Gordon"
 }
