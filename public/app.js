@@ -1,27 +1,65 @@
-$('#js-user-form').submit(function(event) {
+
+
+//event listeners
+$('#js-signup-form').submit(function(event) {
     event.preventDefault();
-    // console.log(event.target.username.value)
-    // console.log($('.username').val())
 
     let obj = {
         username: event.target.username.value,
         password: event.target.password.value
     }
+
     //clear form fields
     $('input, textarea').val('');
-    // $('#password, textarea').val('');
 
     $.ajax({
         type: 'POST',
         data: JSON.stringify(obj),
-        url: 'http://localhost:8080/users',
+        url: 'http://localhost:8080/signup',
         contentType: "application/json",
-        dataType: "json",
-        success: function(data) {
-            console.log(data, "User added!");
-        }
-    }).fail(function(err) {
-        console.log(err)
-    // alert( err.responseJSON.message );
-    });
+        dataType: "json"})
+        .then(function(res) {
+            console.log('RES: ', res)
+            window.location='/stocksaver.html';
+
+        })
+        .fail(function(err) {
+            console.log('AJAX FAIL')
+            $('.alert.alert-warning').toggle(500).append('ERROR')
+            window.location='/signup.html';
+            console.log(err)
+        })
 });
+
+$('#js-login-form').on('submit', function(event) {
+    event.preventDefault();
+
+    let obj = {
+        username: event.target.username.value,
+        password: event.target.password.value
+    }
+
+    //clear form fields
+    $('.form-group').val('');
+
+
+    $.ajax({
+        type: 'POST',
+        data: JSON.stringify(obj),
+        url: 'http://localhost:8080/login',
+        contentType: "application/json",
+        dataType: "json"})
+        .then(function(res) {
+            console.log('RES: ', res)
+            window.location='/stocksaver.html';
+
+        })
+        .fail(function(err) {
+            console.log('AJAX FAIL')
+            $('.alert.alert-warning').toggle(500).append('ERROR')
+            window.location='/login.html';
+            console.log(err)
+        })
+});
+
+$('.alert.alert-warning').toggle();

@@ -41,3 +41,7 @@ form {
     border-radius: 2px;
     font-size: 10px;
 }
+
+.alert alert-warning {
+    display: false;
+}
