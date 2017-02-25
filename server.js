@@ -33,13 +33,9 @@ mongoose.Promise = global.Promise;
 
 const {PORT, DATABASE_URL} = require('./config/database');
 
-//stock API
-const fetchAPI_URL = 'http://finance.google.com/finance/info?client=ig&q='
-
-// app.use('/users', usersRouter);
-
 //protected endpoint
 app.get('/stocksaver', isLoggedIn, function(req, res) {
+    console.log('logged in?')
     res.status(200).json({message: 'success'});
     // res.redirect('/');
     // res.sendFile(__dirname + '/public/stocksaver.html', {user: req.user});
@@ -47,7 +43,8 @@ app.get('/stocksaver', isLoggedIn, function(req, res) {
 
 app.get('/logout', function(req, res) {
     req.logout();
-    res.redirect('/');
+    req.session.destroy();
+    return res.redirect('/');
 });
 
 //user signup
@@ -66,9 +63,10 @@ app.post('/login', passport.authenticate('local-login', {
 
 function isLoggedIn(req, res, next) {
     console.log('isLoggedIn req', req.isAuthenticated())
-    if (req.isAuthenticated())
+    if (req.isAuthenticated()){
         return next();
-    res.redirect('/');
+    }
+    return res.redirect('/login.html');
 }
 
 passport.serializeUser(function(user, done) {
