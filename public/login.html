@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Stock Saver Login</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+
+    <style>
+      body { padding-top: 50px; }
+      img { width: 140px; height: 140px; }
+      .fa-sign-out { float: right; }
+    </style>
+  </head>
+  <body>
+     <div class="col-sm-8 col-sm-offset-2">
+       <div class="jumbotron text-center">
+         <h1><span class="fa fa-sign-in"></span> Login</h1>
+
+         <form id="js-login-form">
+             <div class="alert alert-warning"></div>
+           <div class="form-group">
+               <label>Username</label>
+               <input type="text" class="form-control" name="username" id="js-text">
+           </div>
+           <div class="form-group">
+             <label>Password</label>
+             <input type="password" class="form-control" name="password" id="js-text"/>
+           </div>
+           <div>
+             <input type="submit" class="form-control" value="Submit" />
+           </div>
+         </form>
+
+       </div>
+       <hr>
+       <span class="fa fa-sign-in"> Don't have an account?<a href="/signup.html"> Signup</a></span>
+       <p>Or go <a href="/">home</a>.</p>
+     </div>
+    <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+     <script src="app.js"></script>
+
+   </body>
+ </html>
