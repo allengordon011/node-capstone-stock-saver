@@ -62,13 +62,42 @@ app.post('/login', passport.authenticate('local-login', {
     failureFlash: true
 }))
 
+app.get('/stocks', function(req, res, next) {
+    passport.authenticate('local-login', function(err, user, info) {
+        if (err) {
+            console.log('err: ', err)
+            return next(err);
+        }
+        if (!user) {
+            return res.redirect('/login.html');
+        } else {
+        req.logIn(user, function(err) {
+            if (err) {
+                return next(err);
+            }
+            console.log('req.user: ', req.user)
+            console.log('hey! ', user)
+            // return res.redirect('/users/' + user.username);
+        });
+        }
+    })
+    console.log(req, res, next);
+
+
+    //
+    // let stocks = req.user.stocks
+    // res.status(200).json({stocks: stocks});
+
+});
+
 //Check if user is logged in
 function isLoggedIn(req, res, next) {
     console.log('isLoggedIn req', req.isAuthenticated())
-    if (req.isAuthenticated()){
+    if (req.isAuthenticated()) {
         return next();
+    } else {
+        return res.redirect('/login.html');
     }
-    return res.redirect('/login.html');
 }
 
 passport.serializeUser(function(user, done) {
@@ -128,6 +157,26 @@ passport.use('local-login', new LocalStrategy(function(username, password, done)
         }
     });
 }));
+
+// passport.use('local-saveStock', new LocalStrategy(function(username, password, done) {
+//     let user;
+//     User.findOne({username: username}).exec().then(_user => {
+//         user = _user;
+//         if (!user) {
+//             return done(null, false, {message: 'Incorrect username'});
+//         }
+//         return user.isValidPassword(password);
+//     }).then(isValid => {
+//         if (!isValid) {
+//             console.log('Invalid Password');
+//             return done(null, false, req.flash('message', 'Invalid Password'));
+//         } else {
+//             console.log('GREAT JOB! ', user);
+//
+//             return done(null, user);
+//         }
+//     });
+// }));
 
 // referenced by both runServer and closeServer. closeServer
 // assumes runServer has run and set `server` to a server object

@@ -114,5 +114,25 @@ $('#stock-search').submit(function(event) {
     });
 })
 
-// $('.results').toggle();
+// $('#save-button').on('submit', function(event) {
+//     $.ajax({
+//         type: 'POST',
+//         url:
+//     })
+// });
+
+$( document ).ready(function() {
+    console.log( "ready!" );
+    $.ajax({
+        type: 'GET',
+        url: 'http://localhost:8080/stocks'
+    })
+    .then(function(req, res) {
+        console.log('STOCKS GET req: ', req)
+        console.log('STOCKS GET res: ', res)
+
+        $('#saved-stocks').show(200).html('<ul><li>stock1</li><li>stock2</li>')
+    })
+});
+
 // $('.alert.alert-warning').toggle();
