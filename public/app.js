@@ -27,7 +27,7 @@ $('#js-signup-form').submit(function(event) {
         })
         .fail(function(err) {
             console.log('AJAX FAIL')
-            $('.alert.alert-warning').toggle(500).append('ERROR')
+            $('.alert.alert-warning').toggle(200).append('ERROR')
             window.location='/signup.html';
             console.log(err)
         })
@@ -56,7 +56,7 @@ $('#js-login-form').on('submit', function(event) {
         })
         .fail(function(err) {
             console.log('AJAX FAIL')
-            $('.alert.alert-warning').toggle(500).append('ERROR')
+            $('.alert.alert-warning').toggle(200).append('ERROR')
             window.location='/login.html';
             console.log(err);
         })
@@ -75,7 +75,7 @@ $('#js-logout').click(function(event) {
     })
     .fail(function(err) {
         console.log('AJAX FAIL')
-        $('.alert.alert-warning').toggle(500).append('ERROR')
+        $('.alert.alert-warning').toggle(200).append('ERROR')
         // window.location='/login.html';
         console.log(err);
     })
@@ -85,8 +85,10 @@ $('#stock-search').submit(function(event) {
     event.preventDefault();
     let stock = event.target.stock.value;
     console.log(stock)
-    $('#results').val('')
-    $('.alert').hide(100).html('')
+    $('#results').hide(200).val('')
+    $('.alert').hide(200).html('')
+    $('#save-button').hide(200)
+    $('input, textarea').val('');
 
     $.ajax({
         type: 'GET',
@@ -96,15 +98,17 @@ $('#stock-search').submit(function(event) {
         console.log('RES: ', res.query.results)
         let companyName = res.query.results.quote.Name
         if(companyName === null) {
-            $('.alert').show(500).html('Sorry, that stock was not found.')
+            $('.alert').show(300).html('Sorry, that stock was not found.')
         } else {
         let askPrice = res.query.results.quote.Ask
         let lastPrice = res.query.results.quote.LastTradePriceOnly
-        $('#results').first().show(200).html('The last trading price of ' + companyName + ' (' + stock + ') is: $' + lastPrice)}
+        $('#results').show(300).html('The last trading price of ' + companyName + ' (' + stock + ') is: $' + lastPrice)
+        $('#save-button').show(1000)
+        }
     })
     .fail(function(err) {
         console.log('AJAX FAIL')
-        $('.alert.alert-warning').toggle(500).html('ERROR')
+        $('.alert.alert-warning').toggle(300).html('ERROR')
         // window.location='/login.html';
         console.log(err);
     });

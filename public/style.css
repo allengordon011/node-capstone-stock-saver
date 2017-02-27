@@ -4,7 +4,41 @@ body {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+    padding:20px;
+    font-family: 'News Cycle', sans-serif;
 }
+
+/*font-family: 'Roboto', sans-serif;*/
+
+h1 {
+    font-family: 'Anton', sans-serif;
+}
+
+/*#jumbotron-home {
+    margin: 30px auto 0;
+    padding: 50px;
+    width: 500px;
+}*/
+
+.jumbotron {
+    margin: 30px auto 0;
+    padding: 50px;
+    /*width: 600px;*/
+}
+
+img {
+    width: 140px; height: 140px;
+}
+
+.fa-sign-out {
+    float: right;
+    line-height: 1.428571429;
+    padding-left: 5px;
+}
+
+/*.fa-sign-in {
+    padding-left: 5px;
+}*/
 
 .layer {
     width: 100%;
@@ -12,26 +46,47 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    background: rgba(0, 0, 0, .5);
+    background: rgba(0, 0, 0, .7);
+    background-size: cover;
     z-index: 999;
+    padding: 25px;
 }
 
-.panel-footer {
-    margin-bottom: 20px;
+form {
+    margin: auto;
+    text-align: center;
+    width: 300px;
 }
 
 placeholder {
     text-align: center;
 }
-/*main {
-    font-family: 'Roboto', sans-serif;
 
-}*/
+#js-stock-search {
+    margin: auto;
+    text-align: center;
+    width: 50px;
+    padding: 0px;
+}
+
+.panel-footer {
+    margin: auto;
+    text-align: center;
+}
 
 #results {
     display: none;
 }
 
+#save-button {
+    display: none;
+}
+
+#saved-stocks {
+    display: none;
+}
+
 .alert {
     display: none;
+    margin-bottom: none;
 }

@@ -6,11 +6,11 @@
 <!--    <link id="favicon" rel="icon" href="https://hyperdev.com/favicon-app.ico" type="image/x-icon"> !-->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
-    {# <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> #}
+    <link href="https://fonts.googleapis.com/css?family=Anton|News+Cycle|Roboto:300" rel="stylesheet">
+
     <link rel="stylesheet" href="/style.css">
   </head>
   <body>
@@ -31,13 +31,12 @@
                   </form>
                   <div id="results-container">
                   <div class="alert alert-warning"></div>
-                  <div id="results" >
-                      <button class="btn btn-default">Save results?</button>
-                  </div>
+                  <div id="results"></div>
+                      <button type="submit" id="save-button" class="btn btn-default">Save results?</button>
               </div>
           </div>
               <div class="panel-footer">
-                  <div id="saved">Saved stocks</div>
+                  <div id="saved-stocks">Saved stocks</div>
                 <button class="btn btn-default" id="js-logout"><span class="fa fa-sign-out"></span> Logout</a>
               </div>
           </div>
