@@ -41,6 +41,7 @@ app.get('/stocksaver', isLoggedIn, function(req, res) {
     // res.sendFile(__dirname + '/public/stocksaver.html', {user: req.user});
 });
 
+//user logout
 app.get('/logout', function(req, res) {
     req.logout();
     req.session.destroy();
@@ -61,6 +62,7 @@ app.post('/login', passport.authenticate('local-login', {
     failureFlash: true
 }))
 
+//Check if user is logged in
 function isLoggedIn(req, res, next) {
     console.log('isLoggedIn req', req.isAuthenticated())
     if (req.isAuthenticated()){

@@ -1,5 +1,7 @@
 //stock API
-const fetchAPI_URL = 'http://finance.google.com/finance/info?client=ig&q='
+// const fetchAPI_URL = 'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22'+stock+'%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback='
+
+// 'http://finance.google.com/finance/info?client=ig&q='
 
 //event listeners
 $('#js-signup-form').submit(function(event) {
@@ -79,25 +81,34 @@ $('#js-logout').click(function(event) {
     })
 })
 
-$('#search').submit(function(event) {
+$('#stock-search').submit(function(event) {
     event.preventDefault();
     let stock = event.target.stock.value;
+    console.log(stock)
+    $('#results').val('')
+    $('.alert').hide(100).html('')
 
     $.ajax({
         type: 'GET',
-        url: fetchAPI_URL+stock
+        url: 'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22'+stock+'%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback='
     })
     .then(function(res) {
-        console.log('Stock price found')
-        console.log('RES: ', res)
-        // window.location='/index.html';
+        console.log('RES: ', res.query.results)
+        let companyName = res.query.results.quote.Name
+        if(companyName === null) {
+            $('.alert').show(500).html('Sorry, that stock was not found.')
+        } else {
+        let askPrice = res.query.results.quote.Ask
+        let lastPrice = res.query.results.quote.LastTradePriceOnly
+        $('#results').first().show(200).html('The last trading price of ' + companyName + ' (' + stock + ') is: $' + lastPrice)}
     })
     .fail(function(err) {
         console.log('AJAX FAIL')
-        $('.alert.alert-warning').toggle(500).append('ERROR')
+        $('.alert.alert-warning').toggle(500).html('ERROR')
         // window.location='/login.html';
         console.log(err);
     });
 })
 
-$('.alert.alert-warning').toggle();
+// $('.results').toggle();
+// $('.alert.alert-warning').toggle();

@@ -10,30 +10,38 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-
+    {# <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> #}
     <link rel="stylesheet" href="/style.css">
   </head>
   <body>
-      <div class="col-sm-8 col-sm-offset-2">
-          <div class="jumbotron text-center">
-              <h1>Stock Saver</h1>
-              <p class="lead">An app to help you track your stocks.</p>
-              <form id="search">
-                  <div class="form-group">
-                      <label>Stock price search</label>
-                  <input type="text" name="stock" placeholder="Enter company name/symbol">
-                </div>
-                  <div>
-                    <input type="submit" class="form-control" id="js-stock-search"  value="Submit" />
+      <div class="layer">
+          <div class="col-sm-8 col-sm-offset-2">
+              <div class="jumbotron text-center">
+                  <h1>Stock Saver</h1>
+                  <p class="lead">An app to help you track your stocks.</p>
+                  <form id="stock-search">
+                      <div class="form-group">
+                          <label>Stock price search</label>
+                      <input type="text" name="stock" class="form-control" placeholder="Enter company name/symbol">
+
+                    </div>
+                      <div>
+                        <button type="submit" class="form-control" id="js-stock-search"> <span class="glyphicon glyphicon-search" type="submit" id="js-stock-search"></span></button>
+                    </div>
+                  </form>
+                  <div id="results-container">
+                  <div class="alert alert-warning"></div>
+                  <div id="results" >
+                      <button class="btn btn-default">Save results?</button>
                   </div>
-              </form>
-              <div id="results">
-                  <button class="btn btn-default">Save results?</button>
               </div>
-              <div id="saved">Saved stocks</div>
-            <button class="btn btn-default" id="js-logout"><span class="fa fa-sign-out"></span> Logout</a>
           </div>
+              <div class="panel-footer">
+                  <div id="saved">Saved stocks</div>
+                <button class="btn btn-default" id="js-logout"><span class="fa fa-sign-out"></span> Logout</a>
+              </div>
+          </div>
+      </div>
           <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
           <script src="app.js"></script>
 
