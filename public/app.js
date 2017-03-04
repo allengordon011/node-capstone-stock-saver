@@ -84,7 +84,7 @@ $('#js-logout').click(function(event) {
 $('#stock-search').submit(function(event) {
     event.preventDefault();
     let stock = event.target.stock.value;
-    console.log(stock)
+    // console.log('STOCK: ', stock)
     $('#results').hide(200).val('')
     $('.alert').hide(200).html('')
     $('#save-button').hide(200)
@@ -95,7 +95,7 @@ $('#stock-search').submit(function(event) {
         url: 'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22'+stock+'%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback='
     })
     .then(function(res) {
-        console.log('RES: ', res.query.results)
+        // console.log('RES: ', res.query.results)
         let companyName = res.query.results.quote.Name
         if(companyName === null) {
             $('.alert').show(300).html('Sorry, that stock was not found.')
@@ -114,24 +114,24 @@ $('#stock-search').submit(function(event) {
     });
 })
 
-// $('#save-button').on('submit', function(event) {
+// $('#save-stocks-button').on('submit', function(event) {
 //     $.ajax({
 //         type: 'POST',
 //         url:
 //     })
 // });
 
-$( document ).ready(function() {
+$( '#view-stocks-button' ).on('click', function() {
     console.log( "ready!" );
     $.ajax({
         type: 'GET',
-        url: 'http://localhost:8080/stocks'
+        url: 'http://localhost:8080/stocksaver/stocks'
     })
     .then(function(req, res) {
-        console.log('STOCKS GET req: ', req)
-        console.log('STOCKS GET res: ', res)
-
-        $('#saved-stocks').show(200).html('<ul><li>stock1</li><li>stock2</li>')
+        console.log('STOCKS: ', req.user.stocks)
+        // let stocks = [{stock: 'goog', price: 500}, {stock: 'appl', price : 500}]
+        //req.user.stocks.map()
+        $('#saved-stocks').show(200).html(`<ul><li>{stocks[0].stock}</li><li>stock2</li>`)
     })
 });
 

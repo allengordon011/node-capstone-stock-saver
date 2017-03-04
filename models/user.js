@@ -22,16 +22,7 @@ UserSchema.methods.apiRepr = function() {
 }
 
 UserSchema.methods.isValidPassword = function(password) {
-    console.log('CHECKING PASSWORD')
     return bcrypt.compare(password, this.password);
-        // function(err, matches) {
-        // if (err) {
-        //     console.log('Error while checking password');
-        // } else if (matches) {
-        //     console.log('The password matches!');
-        // } else {
-        //     console.log('The password does NOT match!');
-        // }
     };
 
 UserSchema.statics.hashPassword = function(password) {

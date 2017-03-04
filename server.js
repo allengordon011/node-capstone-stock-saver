@@ -22,8 +22,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(jsonParser);
 app.use(flash());
-app.use(cookieParser());
-app.use(session({secret: 'hunter'}));
+app.use(cookieParser('hunter'));
+app.use(session({secret: 'hunter',
+        resave: true,
+        saveUninitialized: true,
+        cookie : { secure : false, maxAge : (4 * 60 * 60 * 1000) }, // 4 hours
+        }));
 app.use(passport.initialize());
 app.use(passport.session()); // Required for persistent login sessions (optional, but recommended)
 
@@ -35,8 +39,8 @@ const {PORT, DATABASE_URL} = require('./config/database');
 
 //protected endpoint
 app.get('/stocksaver', isLoggedIn, function(req, res) {
-    console.log('logged in?')
-    res.status(200).json({message: 'success'});
+    console.log('user1: ', req.user)
+    res.status(200).json({user: req.user});
     // res.redirect('/');
     // res.sendFile(__dirname + '/public/stocksaver.html', {user: req.user});
 });
@@ -62,31 +66,13 @@ app.post('/login', passport.authenticate('local-login', {
     failureFlash: true
 }))
 
-app.get('/stocks', function(req, res, next) {
-    passport.authenticate('local-login', function(err, user, info) {
-        if (err) {
-            console.log('err: ', err)
-            return next(err);
-        }
-        if (!user) {
-            return res.redirect('/login.html');
-        } else {
-        req.logIn(user, function(err) {
-            if (err) {
-                return next(err);
-            }
-            console.log('req.user: ', req.user)
-            console.log('hey! ', user)
-            // return res.redirect('/users/' + user.username);
-        });
-        }
-    })
-    console.log(req, res, next);
+app.get('/stocksaver/stocks', isLoggedIn, function(req, res, next) {
+  //User.findOne?
+  console.log('SESSION: ', req.session)
+    let stocks = req.user.stocks
+    console.log('GOOD MORNING', stocks)
 
-
-    //
-    // let stocks = req.user.stocks
-    // res.status(200).json({stocks: stocks});
+    res.status(200).json({user: req.user});
 
 });
 
@@ -106,6 +92,7 @@ passport.serializeUser(function(user, done) {
 
 passport.deserializeUser(function(id, done) {
     User.findById(id, function(err, user) {
+      console.log('deserializeUser, ', user)
         done(err, user);
     });
 });
@@ -141,6 +128,7 @@ passport.use('local-login', new LocalStrategy(function(username, password, done)
     let user;
     User.findOne({username: username}).exec().then(_user => {
         user = _user;
+        console.log('FOUND: ', user)
         if (!user) {
             return done(null, false, {message: 'Incorrect username'});
         }
@@ -151,7 +139,6 @@ passport.use('local-login', new LocalStrategy(function(username, password, done)
             return done(null, false, req.flash('message', 'Invalid Password'));
         } else {
             console.log('USER', user);
-
             console.log('Valid Password');
             return done(null, user);
         }
