@@ -23,11 +23,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(jsonParser);
 app.use(flash());
 app.use(cookieParser('hunter'));
-app.use(session({secret: 'hunter',
-        resave: true,
-        saveUninitialized: true,
-        cookie : { secure : false, maxAge : (4 * 60 * 60 * 1000) }, // 4 hours
-        }));
+app.use(session({
+    secret: 'hunter',
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+        secure: false,
+        maxAge: (4 * 60 * 60 * 1000)
+    }, // 4 hours
+}));
 app.use(passport.initialize());
 app.use(passport.session()); // Required for persistent login sessions (optional, but recommended)
 
@@ -39,7 +43,6 @@ const {PORT, DATABASE_URL} = require('./config/database');
 
 //protected endpoint
 app.get('/stocksaver', isLoggedIn, function(req, res) {
-    console.log('user1: ', req.user)
     res.status(200).json({user: req.user});
     // res.redirect('/');
     // res.sendFile(__dirname + '/public/stocksaver.html', {user: req.user});
@@ -67,13 +70,14 @@ app.post('/login', passport.authenticate('local-login', {
 }))
 
 app.get('/stocksaver/stocks', isLoggedIn, function(req, res, next) {
-  //User.findOne?
-  console.log('SESSION: ', req.session)
-    let stocks = req.user.stocks
-    console.log('GOOD MORNING', stocks)
+    console.log('req user2a: ', req.user)
 
-    res.status(200).json({user: req.user});
-
+    User.findOne({username: req.user.username}).exec().then(_user => {
+        console.log('res: ', res)
+        console.log('_user: ', _user)
+        let stocks = req.user.stocks
+        res.status(200).json({user: req.user});
+    })
 });
 
 //Check if user is logged in
@@ -87,12 +91,13 @@ function isLoggedIn(req, res, next) {
 }
 
 passport.serializeUser(function(user, done) {
-    done(null, user._id);
+    // console.log('serializeUser, ', user)
+    done(null, user.id);
 });
 
 passport.deserializeUser(function(id, done) {
     User.findById(id, function(err, user) {
-      console.log('deserializeUser, ', user)
+        // console.log('deserializeUser, ', user)
         done(err, user);
     });
 });
@@ -144,6 +149,7 @@ passport.use('local-login', new LocalStrategy(function(username, password, done)
         }
     });
 }));
+
 
 // passport.use('local-saveStock', new LocalStrategy(function(username, password, done) {
 //     let user;

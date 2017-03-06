@@ -50,9 +50,12 @@ $('#js-login-form').on('submit', function(event) {
         url: 'http://localhost:8080/login',
         contentType: "application/json",
         dataType: "json"})
-        .then(function(res) {
-            console.log('RES: ', res)
+        .then(function() {
             window.location='/stocksaver.html';
+            // $(document).ready(function() {
+            //     $('#js-user').html(`Hi, ${req.user.username}.`)
+            // })
+
         })
         .fail(function(err) {
             console.log('AJAX FAIL')
@@ -69,9 +72,10 @@ $('#js-logout').click(function(event) {
         url: 'http://localhost:8080/logout'
     })
     .then(function(res) {
+
+        window.location='/index.html';
         console.log('User Logged Out')
         console.log('RES: ', res)
-        window.location='/index.html';
     })
     .fail(function(err) {
         console.log('AJAX FAIL')
@@ -128,11 +132,14 @@ $( '#view-stocks-button' ).on('click', function() {
         url: 'http://localhost:8080/stocksaver/stocks'
     })
     .then(function(req, res) {
-        console.log('STOCKS: ', req.user.stocks)
+        console.log('user3: ', req.user)
+        // console.log('STOCKS: ', req.user.stocks)
         // let stocks = [{stock: 'goog', price: 500}, {stock: 'appl', price : 500}]
         //req.user.stocks.map()
+
         $('#saved-stocks').show(200).html(`<ul><li>{stocks[0].stock}</li><li>stock2</li>`)
     })
 });
+
 
 // $('.alert.alert-warning').toggle();
