@@ -69,21 +69,31 @@ app.post('/login', passport.authenticate('local-login', {
     failureFlash: true
 }))
 
+//user delete
+app.delete('/destroy', isLoggedIn, function(req, res, next) {
+    console.log('USER DELETE REQ SESSION USER: ', req.session.user)
+    //   User.findByIdAndRemove(req.session.user._id, {},
+    //   function(err, obj) {
+    //     if (err) next(err);
+    //     req.session.destroy(function(error) {
+    //       if (err) {
+    //         next(err)
+    //       }
+    //     });
+    //     res.json(200, obj);
+    // });
+})
+
+//stock retrieval
 app.get('/stocksaver/stocks', isLoggedIn, function(req, res, next) {
     // let stocks = req.user.stocks
     res.status(200).json({user: req.user});
 });
 
 //stock save
-// app.post('/stocksaver/stocks', passport.authenticate('local-saveNewStock', {
-//     // successRedirect: '/stocksaver',
-//     // failureRedirect: '/login',
-//     failureFlash: true
-// }))
-
 app.post('/stocksaver/stocks', isLoggedIn, function(req, res, next) {
     console.log('REQ5: ', req.body)
-    // let stocks = req.user.stocks
+    // **ADD IF STOCK EXISTS
     let id = req.user._id
     User.findByIdAndUpdate(id, {
         $push: {
@@ -97,137 +107,145 @@ app.post('/stocksaver/stocks', isLoggedIn, function(req, res, next) {
     });
 });
 
-    //Check if user is logged in
-    function isLoggedIn(req, res, next) {
-        console.log('isLoggedIn req', req.isAuthenticated())
-        if (req.isAuthenticated()) {
-            return next();
-        } else {
-            return res.redirect('/login.html');
-        }
+//stock delete
+app.delete('/stocksaver/stocks', isLoggedIn, function(req, res, next) {
+    console.log('STOCK DELETE REQ USER: ', req.user)
+    console.log('STOCK DELETE REQ id: ', req.id)
+    // console.log('STOCK DELETE REQ PARAMS: ', req.params)    // User.findByIdAndRemove(req.user.stocks._id,
+    res.status(204).json({message: 'Stock deleted.'})
+})
+
+//Check if user is logged in
+function isLoggedIn(req, res, next) {
+    console.log('isLoggedIn req', req.isAuthenticated())
+    if (req.isAuthenticated()) {
+        return next();
+    } else {
+        return res.redirect('/login.html');
     }
+}
 
-    passport.serializeUser(function(user, done) {
-        // console.log('serializeUser, ', user)
-        done(null, user.id);
+passport.serializeUser(function(user, done) {
+    // console.log('serializeUser, ', user)
+    done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+    User.findById(id, function(err, user) {
+        // console.log('deserializeUser, ', user)
+        done(err, user);
     });
+});
 
-    passport.deserializeUser(function(id, done) {
-        User.findById(id, function(err, user) {
-            // console.log('deserializeUser, ', user)
-            done(err, user);
-        });
-    });
-
-    passport.use('local-signup', new LocalStrategy(function(username, password, done) {
-        //process.nextTick(function() {
-        User.findOne({username: username}).exec().then(_user => {
-            let user = _user;
-            if (user) {
-                console.log('User already exists');
-                return done(null, false, req.flash('message', 'User Already Exists'));
-            } else {
-                console.log('creating user');
-                return User.find({username}).count().exec().then(count => {
-                    if (count > 0) {
-                        return res.status(422).json({message: 'username already taken'});
-                    }
-                    // if no existing user, hash password
-                    return User.hashPassword(password)
-                }).then(hash => {
-                    return User.create({username: username, password: hash}).then(user => {
-                        // console.log(user)
-                        // return user.apiRepr();
-                        done(null, user);
-                        // return
-                    });
+passport.use('local-signup', new LocalStrategy(function(username, password, done) {
+    //process.nextTick(function() {
+    User.findOne({username: username}).exec().then(_user => {
+        let user = _user;
+        if (user) {
+            console.log('User already exists');
+            return done(null, false, req.flash('message', 'User Already Exists'));
+        } else {
+            console.log('creating user');
+            return User.find({username}).count().exec().then(count => {
+                if (count > 0) {
+                    return res.status(422).json({message: 'username already taken'});
+                }
+                // if no existing user, hash password
+                return User.hashPassword(password)
+            }).then(hash => {
+                return User.create({username: username, password: hash}).then(user => {
+                    // console.log(user)
+                    // return user.apiRepr();
+                    done(null, user);
+                    // return
                 });
-            }
-        })
-    }));
+            });
+        }
+    })
+}));
 
-    passport.use('local-login', new LocalStrategy(function(username, password, done) {
-        let user;
-        User.findOne({username: username}).exec().then(_user => {
-            user = _user;
-            console.log('FOUND: ', user)
-            if (!user) {
-                return done(null, false, {message: 'Incorrect username'});
+passport.use('local-login', new LocalStrategy(function(username, password, done) {
+    let user;
+    User.findOne({username: username}).exec().then(_user => {
+        user = _user;
+        console.log('FOUND: ', user)
+        if (!user) {
+            return done(null, false, {message: 'Incorrect username'});
+        }
+        return user.isValidPassword(password);
+    }).then(isValid => {
+        if (!isValid) {
+            console.log('Invalid Password');
+            return done(null, false, req.flash('message', 'Invalid Password'));
+        } else {
+            console.log('Valid Password');
+            return done(null, user);
+        }
+    });
+}));
+
+// passport.use('local-saveNewStock', new LocalStrategy(function(username, password, done) {
+//     User.findByIdAndUpdate(id, {$set: {stocks: {stock: this.stock, price: this.price}}}, {upsert: true}, function(err, _user) {
+//         user = _user;
+//         if (!user) {
+//             return done(null, false, {message: 'Incorrect username'});
+//         }
+//         return user.isValidPassword(password);
+//     }).then(isValid => {
+//         if (!isValid) {
+//             console.log('Invalid Password');
+//             return done(null, false, req.flash('message', 'Invalid Password'));
+//         } else {
+//             console.log('SAVE STOCK! ', user);
+//
+//             return done(null, user);
+//         }
+//     });
+// }));
+
+// referenced by both runServer and closeServer. closeServer
+// assumes runServer has run and set `server` to a server object
+let server;
+
+function runServer() {
+    return new Promise((resolve, reject) => {
+        mongoose.connect(DATABASE_URL, err => {
+            if (err) {
+                return reject(err);
             }
-            return user.isValidPassword(password);
-        }).then(isValid => {
-            if (!isValid) {
-                console.log('Invalid Password');
-                return done(null, false, req.flash('message', 'Invalid Password'));
-            } else {
-                console.log('Valid Password');
-                return done(null, user);
-            }
+            server = app.listen(PORT, () => {
+                console.log(`Your app is listening on port ${PORT}`);
+                resolve();
+            }).on('error', err => {
+                mongoose.disconnect();
+                reject(err);
+            });
         });
-    }));
+    });
+}
 
-    // passport.use('local-saveNewStock', new LocalStrategy(function(username, password, done) {
-    //     User.findByIdAndUpdate(id, {$set: {stocks: {stock: this.stock, price: this.price}}}, {upsert: true}, function(err, _user) {
-    //         user = _user;
-    //         if (!user) {
-    //             return done(null, false, {message: 'Incorrect username'});
-    //         }
-    //         return user.isValidPassword(password);
-    //     }).then(isValid => {
-    //         if (!isValid) {
-    //             console.log('Invalid Password');
-    //             return done(null, false, req.flash('message', 'Invalid Password'));
-    //         } else {
-    //             console.log('SAVE STOCK! ', user);
-    //
-    //             return done(null, user);
-    //         }
-    //     });
-    // }));
-
-    // referenced by both runServer and closeServer. closeServer
-    // assumes runServer has run and set `server` to a server object
-    let server;
-
-    function runServer() {
+function closeServer() {
+    return mongoose.disconnect().then(() => {
         return new Promise((resolve, reject) => {
-            mongoose.connect(DATABASE_URL, err => {
+            console.log('Closing server');
+            server.close(err => {
                 if (err) {
                     return reject(err);
                 }
-                server = app.listen(PORT, () => {
-                    console.log(`Your app is listening on port ${PORT}`);
-                    resolve();
-                }).on('error', err => {
-                    mongoose.disconnect();
-                    reject(err);
-                });
+                resolve();
             });
         });
-    }
+    });
+}
 
-    function closeServer() {
-        return mongoose.disconnect().then(() => {
-            return new Promise((resolve, reject) => {
-                console.log('Closing server');
-                server.close(err => {
-                    if (err) {
-                        return reject(err);
-                    }
-                    resolve();
-                });
-            });
-        });
-    }
+// if server.js is called directly (aka, with `node server.js`), this block
+// runs. but we also export the runServer command so other code (for instance, test code) can start the server as needed.
+if (require.main === module) {
+    runServer().catch(err => console.error(err));
+};
 
-    // if server.js is called directly (aka, with `node server.js`), this block
-    // runs. but we also export the runServer command so other code (for instance, test code) can start the server as needed.
-    if (require.main === module) {
-        runServer().catch(err => console.error(err));
-    };
-
-    module.exports = {
-        app,
-        runServer,
-        closeServer
-    };
+module.exports = {
+    app,
+    runServer,
+    closeServer
+};

@@ -37,7 +37,19 @@
           </div>
               <div class="panel-footer">
                 <button type="submit" id="view-stocks-button" class="btn btn-default">View saved stocks</button>
-                  <div id="saved-stocks">Saved stocks</div>
+                  <div id="saved-stocks">
+                      <table class="table table-striped">
+                          <thead>
+                              <tr>
+                                  <th>STOCK</th>
+                                  <th>PRICE</th>
+                                  <th></th>
+                              </tr>
+                          </thead>
+                          <tbody id="stocks-table">
+                          </tbody>
+                      </table>
+                  </div>
                 <button class="btn btn-default" id="js-logout"><span class="fa fa-sign-out"></span> Logout</a>
               </div>
       </div>

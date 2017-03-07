@@ -33,6 +33,20 @@ img {
     padding-left: 5px;
 }
 
+.fa-times {
+    text-align: middle;
+}
+
+th {
+    font-weight: bold;
+    text-align: center;
+}
+
+td {
+    vertical-align: middle;
+    text-align: center;
+    padding: 3px;
+}
 /*.fa-sign-in {
     padding-left: 5px;
 }*/
