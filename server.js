@@ -109,8 +109,7 @@ app.post('/stocksaver/stocks', isLoggedIn, function(req, res, next) {
 
 //stock delete
 app.delete('/stocksaver/stocks', isLoggedIn, function(req, res, next) {
-    console.log('STOCK DELETE REQ USER: ', req.user)
-    console.log('STOCK DELETE REQ id: ', req.id)
+    console.log('Data: ', req.body)
     // console.log('STOCK DELETE REQ PARAMS: ', req.params)    // User.findByIdAndRemove(req.user.stocks._id,
     res.status(204).json({message: 'Stock deleted.'})
 })

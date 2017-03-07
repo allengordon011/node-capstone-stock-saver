@@ -122,10 +122,10 @@ $('#saved-stocks').on('click', 'a', function(event) {
     let stockId = $(this).attr("value");
 
     $.ajax({type: 'DELETE',
-    data: {"id" : stockId}, 
+    data: JSON.stringify({id: stockId}),
+    contentType: "application/json", dataType: "json",
     url: 'http://localhost:8080/stocksaver/stocks'})
     .then(function(req, res) {
-        console.log('FE BODY: ', req.body)
         console.log('FE user: ', req.user)
         // let stocks = req.user.stocks
         // let stocksList = Object.keys(stocks).map(function(key) {
