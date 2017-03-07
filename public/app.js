@@ -51,10 +51,8 @@ $('#js-login-form').on('submit', function(event) {
         contentType: "application/json",
         dataType: "json"})
         .then(function() {
+            // $('#js-user').html(`Hi, ${req.user.username}.`)
             window.location='/stocksaver.html';
-            // $(document).ready(function() {
-            //     $('#js-user').html(`Hi, ${req.user.username}.`)
-            // })
 
         })
         .fail(function(err) {
@@ -100,15 +98,27 @@ $('#stock-search').submit(function(event) {
     })
     .then(function(res) {
         // console.log('RES: ', res.query.results)
-        let companyName = res.query.results.quote.Name
-        if(companyName === null) {
+        let companyName = res.query.results.quote.Name;
+        let askPrice = res.query.results.quote.Ask;
+        let lastPrice = res.query.results.quote.LastTradePriceOnly;        if(companyName === null) {
             $('.alert').show(300).html('Sorry, that stock was not found.')
         } else {
-        let askPrice = res.query.results.quote.Ask
-        let lastPrice = res.query.results.quote.LastTradePriceOnly
+
         $('#results').show(300).html('The last trading price of ' + companyName + ' (' + stock + ') is: $' + lastPrice)
-        $('#save-button').show(1000)
+        $('#save-stocks-button').show(1000)
         }
+        $('#save-stocks-button').on('click', function(event) {
+            // console.log(companyName)
+            // console.log(lastPrice)
+            let obj = {stock: stock, price: lastPrice}
+            $.ajax({
+                type: 'POST',
+                data: JSON.stringify(obj),
+                url: 'http://localhost:8080/stocksaver/stocks',
+                contentType: "application/json",
+                dataType: "json"
+            })
+        });
     })
     .fail(function(err) {
         console.log('AJAX FAIL')
@@ -118,12 +128,6 @@ $('#stock-search').submit(function(event) {
     });
 })
 
-// $('#save-stocks-button').on('submit', function(event) {
-//     $.ajax({
-//         type: 'POST',
-//         url:
-//     })
-// });
 
 $( '#view-stocks-button' ).on('click', function() {
     console.log( "ready!" );
@@ -132,12 +136,12 @@ $( '#view-stocks-button' ).on('click', function() {
         url: 'http://localhost:8080/stocksaver/stocks'
     })
     .then(function(req, res) {
-        console.log('user3: ', req.user)
-        // console.log('STOCKS: ', req.user.stocks)
-        // let stocks = [{stock: 'goog', price: 500}, {stock: 'appl', price : 500}]
-        //req.user.stocks.map()
+        let stocks = req.user.stocks
+        let stocksList = Object.keys(stocks).map(function(key) {
+            return `<li>"${stocks[key].stock}", Last Price: $${stocks[key].price}</li>`
+        }).join("");
 
-        $('#saved-stocks').show(200).html(`<ul><li>{stocks[0].stock}</li><li>stock2</li>`)
+        $('#saved-stocks').show(200).html(`<ul>${stocksList}</ul>`)
     })
 });
 

@@ -11,7 +11,10 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    stocks: [String]
+    stocks: [{
+        stock: String,
+        price: Number
+    }]
 });
 
 UserSchema.methods.apiRepr = function() {
