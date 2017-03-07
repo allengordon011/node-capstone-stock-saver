@@ -109,9 +109,35 @@ app.post('/stocksaver/stocks', isLoggedIn, function(req, res, next) {
 
 //stock delete
 app.delete('/stocksaver/stocks', isLoggedIn, function(req, res, next) {
-    console.log('Data: ', req.body)
-    // console.log('STOCK DELETE REQ PARAMS: ', req.params)    // User.findByIdAndRemove(req.user.stocks._id,
-    res.status(204).json({message: 'Stock deleted.'})
+    let stockId = req.body.id;
+    User.findById(req.user._id, function(err, res) {
+        if (err) {
+            console.error(err)
+        }
+        let stocks = res.stocks
+        // console.log('STOCKS: ', stocks)
+        function findStock(stock) {
+            // console.log('STOCK ID: ', typeof stock._id)
+            // console.log('SEARCH ID: ', typeof stockId)
+            if (stock._id.toString() === stockId) {
+                return stock
+            }
+        }
+        let stockIndex = stocks.findIndex(findStock);
+        stocks.splice(stockIndex, 1);
+        // return stocks;
+        User.findByIdAndUpdate(req.user._id, {
+            $set: {
+                stocks: stocks
+            }
+        }, function(err, res) {
+            // console.error(err)
+
+        });
+    })
+
+    res.status(204).json({message: 'Deleted Stock.'})
+
 })
 
 //Check if user is logged in
@@ -138,6 +164,7 @@ passport.deserializeUser(function(id, done) {
 
 passport.use('local-signup', new LocalStrategy(function(username, password, done) {
     //process.nextTick(function() {
+    username.toLowerCase()
     User.findOne({username: username}).exec().then(_user => {
         let user = _user;
         if (user) {
@@ -165,6 +192,7 @@ passport.use('local-signup', new LocalStrategy(function(username, password, done
 
 passport.use('local-login', new LocalStrategy(function(username, password, done) {
     let user;
+    username = username.toLowerCase()
     User.findOne({username: username}).exec().then(_user => {
         user = _user;
         console.log('FOUND: ', user)
@@ -182,25 +210,6 @@ passport.use('local-login', new LocalStrategy(function(username, password, done)
         }
     });
 }));
-
-// passport.use('local-saveNewStock', new LocalStrategy(function(username, password, done) {
-//     User.findByIdAndUpdate(id, {$set: {stocks: {stock: this.stock, price: this.price}}}, {upsert: true}, function(err, _user) {
-//         user = _user;
-//         if (!user) {
-//             return done(null, false, {message: 'Incorrect username'});
-//         }
-//         return user.isValidPassword(password);
-//     }).then(isValid => {
-//         if (!isValid) {
-//             console.log('Invalid Password');
-//             return done(null, false, req.flash('message', 'Invalid Password'));
-//         } else {
-//             console.log('SAVE STOCK! ', user);
-//
-//             return done(null, user);
-//         }
-//     });
-// }));
 
 // referenced by both runServer and closeServer. closeServer
 // assumes runServer has run and set `server` to a server object

@@ -77,10 +77,13 @@ $('#stock-search').submit(function(event) {
         type: 'GET',
         url: 'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22' + stock + '%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback='
     }).then(function(res) {
-        console.log('OBJ: ', obj)
         let companyName = res.query.results.quote.Name;
         let askPrice = res.query.results.quote.Ask;
         let lastPrice = res.query.results.quote.LastTradePriceOnly;
+        let obj = {
+            stock: stock,
+            price: lastPrice
+        }
         if (companyName === null) {
             $('.alert').show(300).html('Sorry, that stock was not found.')
         } else {
@@ -89,10 +92,7 @@ $('#stock-search').submit(function(event) {
             $('#save-stocks-button').show(1000)
         }
         $('#save-stocks-button').one('click', function(event) {
-            let obj = {
-                stock: stock,
-                price: lastPrice
-            }
+
             $.ajax({type: 'POST', data: JSON.stringify(obj), url: 'http://localhost:8080/stocksaver/stocks', contentType: "application/json", dataType: "json"})
         });
     }).fail(function(err) {
@@ -118,20 +118,21 @@ $('#view-stocks-button').on('click', function() {
     })
 });
 
+//delete saved stock
 $('#saved-stocks').on('click', 'a', function(event) {
     let stockId = $(this).attr("value");
+    $(this).closest('tr').remove();
 
     $.ajax({type: 'DELETE',
     data: JSON.stringify({id: stockId}),
     contentType: "application/json", dataType: "json",
     url: 'http://localhost:8080/stocksaver/stocks'})
     .then(function(req, res) {
-        console.log('FE user: ', req.user)
-        // let stocks = req.user.stocks
-        // let stocksList = Object.keys(stocks).map(function(key) {
-        //     return `<tr><td>${stocks[key].stock}</td><td>$${stocks[key].price}</td><td><a class="btn btn-small" id="delete-stock-button"><i class="fa fa-times" aria-hidden="true"></i> Delete</a></td></tr>`
-        // }).join("");
-        // $('#saved-stocks').show(200)
-        // $('#stocks-table').html(`${stocksList}`)
+        console.log('Deleted')
     })
+    .fail(function(err) {
+        console.log('Failed to delete')
+        $('.alert.alert-warning').toggle(300).html('DELETION ERROR')
+        console.log(err);
+    });
 });
