@@ -1,5 +1,5 @@
 {
-  "name": "node-capstone-stock-trax",
+  "name": "node-capstone-stock-saver",
   "version": "0.0.1",
   "description": "Financial stock price API",
   "main": "server.js",
