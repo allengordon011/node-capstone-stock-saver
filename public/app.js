@@ -1,3 +1,6 @@
+// const {PORT} = require('./config/database');
+
+
 //signup
 $('#js-signup-form').submit(function(event) {
     event.preventDefault();
@@ -10,7 +13,7 @@ $('#js-signup-form').submit(function(event) {
     //clear form fields
     $('input, textarea').val('');
 
-    $.ajax({type: 'POST', data: JSON.stringify(obj), url: 'http://localhost:8080/signup', contentType: "application/json", dataType: "json"}).then(function(res) {
+    $.ajax({type: 'POST', data: JSON.stringify(obj), url: '/signup', contentType: "application/json", dataType: "json"}).then(function(res) {
         console.log('RES: ', res)
         window.location = '/stocksaver.html';
     }).fail(function(err) {
@@ -33,7 +36,7 @@ $('#js-login-form').on('submit', function(event) {
     //clear form fields
     $('.form-group').val('');
 
-    $.ajax({type: 'POST', data: JSON.stringify(user), url: 'http://localhost:8080/login', contentType: "application/json", dataType: "json"}).then(function() {
+    $.ajax({type: 'POST', data: JSON.stringify(user), url: '/login', contentType: "application/json", dataType: "json"}).then(function() {
         window.location = '/stocksaver.html';
     }).fail(function(err) {
         console.log('AJAX FAIL')
@@ -46,7 +49,7 @@ $('#js-login-form').on('submit', function(event) {
 //get username
 $(document).ready(function(){
     if (window.location.href.indexOf("stocksaver") > -1) {
-    $.ajax({type: 'GET', url: 'http://localhost:8080/stocksaver/user'}).then(function(req, res) {
+    $.ajax({type: 'GET', url: '/stocksaver/user'}).then(function(req, res) {
         function capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -61,7 +64,7 @@ $(document).ready(function(){
 //logout
 $('#js-logout').click(function(event) {
     event.preventDefault();
-    $.ajax({type: 'GET', url: 'http://localhost:8080/logout'}).then(function(res) {
+    $.ajax({type: 'GET', url: '/logout'}).then(function(res) {
         window.location = '/index.html';
         console.log('User Logged Out')
     }).fail(function(err) {
@@ -106,7 +109,7 @@ $('#stock-search').submit(function(event) {
 //save stocks
 $('#save-stocks-button').on('click', function(event) {
 
-    $.ajax({type: 'POST', data: JSON.stringify(obj), url: 'http://localhost:8080/stocksaver/stocks', contentType: "application/json", dataType: "json"}).then(function(res) {
+    $.ajax({type: 'POST', data: JSON.stringify(obj), url: '/stocksaver/stocks', contentType: "application/json", dataType: "json"}).then(function(res) {
         console.log('save res: ', res)
             $('#stocks-table').append( `<tr><td>${obj.stock}</td><td>$${obj.price}</td><td><a class="btn btn-small" id="delete-stock-button" value="${obj._id}"><i class="fa fa-times" aria-hidden="true"></i> Delete Stock</a></td></tr>`)
     }).fail(function(err) {
@@ -118,7 +121,7 @@ $('#save-stocks-button').on('click', function(event) {
 
 //view saved stocks
 $('#view-stocks-button').on('click', function() {
-    $.ajax({type: 'GET', url: 'http://localhost:8080/stocksaver/stocks'}).then(function(req, res) {
+    $.ajax({type: 'GET', url: '/stocksaver/stocks'}).then(function(req, res) {
         let stocks = req.user.stocks;
         if (stocks.length === 0) {
             $('#saved-stocks').show(200).html(`<ul><li>You do not have any saved stocks yet.</li><ul>`)
@@ -142,7 +145,7 @@ $('#saved-stocks').on('click', 'a', function() {
         data: JSON.stringify({id: stockId}),
         contentType: "application/json",
         dataType: "json",
-        url: 'http://localhost:8080/stocksaver/stocks'
+        url: '/stocksaver/stocks'
     }).then(function(req, res) {
         console.log('Deleted Stock')
     }).fail(function(err) {
@@ -156,7 +159,7 @@ $('#saved-stocks').on('click', 'a', function() {
 $('#delete-user').on('click', function() {
     $('#confirm-user-delete').show(200)
     $('#do-user-delete').show(200).on('click', function() {
-        $.ajax({type: 'DELETE', url: 'http://localhost:8080/destroy'}).then(function(req, res) {
+        $.ajax({type: 'DELETE', url: '/destroy'}).then(function(req, res) {
             window.location = '/index.html';
         }).fail(function(err) {
             console.log('Failed to delete')
