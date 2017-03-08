@@ -9,14 +9,19 @@ body {
     background-size: cover;
     /*padding:20px;*/
     font-family: 'News Cycle', sans-serif;
+    padding-bottom: 150px;
 }
 
 /*font-family: 'Roboto', sans-serif;*/
 
 .jumbotron {
-    margin: 30px auto 0;
+    margin: 35px auto 0px;
     padding: 50px;
     width: 475px;
+}
+
+#jumbotron-home {
+    margin: 100px auto 0px;
 }
 
 img {
@@ -32,7 +37,9 @@ img {
 .fa-times {
     text-align: middle;
     float: right;
-
+    line-height: 1.428571429;
+    padding-left: 5px;
+    color: red;
 }
 
 th {
@@ -41,7 +48,7 @@ th {
 }
 
 td {
-    vertical-align: middle;
+    vertical-align: middle !important;
     text-align: center;
     padding: 3px;
 }
@@ -72,7 +79,7 @@ placeholder {
 }
 
 .panel-footer {
-    margin: auto;
+    margin: 0 auto 50px;
     text-align: center;
     width: 475px;
 }
@@ -102,6 +109,11 @@ placeholder {
 
 #cancel-user-delete {
     display: none;
+}
+
+#delete-stock-button {
+    padding: 0px;
+    color: red;
 }
 
 .alert {
@@ -136,7 +148,7 @@ width: 100%;
     background-color: #eee;
     text-align: center;
     vertical-align: middle;
-    height: 120px;
+    height: 135px;
     top: 0
 }
 
@@ -152,6 +164,7 @@ width: 100%;
 
 h1 {
     font-family: 'Anton', sans-serif;
+    font-size: 60px;
     text-align: center;
     padding-top: 25px;
     margin: 0;

@@ -44,8 +44,6 @@ const {PORT, DATABASE_URL} = require('./config/database');
 //protected endpoint
 app.get('/stocksaver', isLoggedIn, function(req, res) {
     res.status(200).json({user: req.user});
-    // res.redirect('/');
-    // res.sendFile(__dirname + '/public/stocksaver.html', {user: req.user});
 });
 
 //user logout
@@ -71,7 +69,6 @@ app.post('/login', passport.authenticate('local-login', {
 
 //user delete
 app.delete('/destroy', isLoggedIn, function(req, res, next) {
-    // console.log('USER DELETE REQ SESSION USER: ', req.user)
       User.findByIdAndRemove(req.user._id, {},
       function(err, obj) {
         if (err) next(err);
@@ -83,6 +80,12 @@ app.delete('/destroy', isLoggedIn, function(req, res, next) {
         res.json(200, obj);
     });
 })
+
+//user retrieval
+app.get('/stocksaver/user', isLoggedIn, function(req, res, next) {
+    // let stocks = req.user.stocks
+    res.status(200).json({user: req.user});
+});
 
 //stock retrieval
 app.get('/stocksaver/stocks', isLoggedIn, function(req, res, next) {
@@ -114,7 +117,6 @@ app.delete('/stocksaver/stocks', isLoggedIn, function(req, res, next) {
             console.error(err)
         }
         let stocks = res.stocks
-        // console.log('STOCKS: ', stocks)
         function findStock(stock) {
             // console.log('STOCK ID: ', typeof stock._id)
             // console.log('SEARCH ID: ', typeof stockId)
@@ -124,7 +126,6 @@ app.delete('/stocksaver/stocks', isLoggedIn, function(req, res, next) {
         }
         let stockIndex = stocks.findIndex(findStock);
         stocks.splice(stockIndex, 1);
-        // return stocks;
         User.findByIdAndUpdate(req.user._id, {
             $set: {
                 stocks: stocks
@@ -150,13 +151,11 @@ function isLoggedIn(req, res, next) {
 }
 
 passport.serializeUser(function(user, done) {
-    // console.log('serializeUser, ', user)
     done(null, user.id);
 });
 
 passport.deserializeUser(function(id, done) {
     User.findById(id, function(err, user) {
-        // console.log('deserializeUser, ', user)
         done(err, user);
     });
 });
