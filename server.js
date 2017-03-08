@@ -22,8 +22,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(jsonParser);
 app.use(flash());
-app.use(cookieParser());
-app.use(session({secret: 'hunter'}));
+app.use(cookieParser('hunter'));
+app.use(session({
+    secret: 'hunter',
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+        secure: false,
+        maxAge: (4 * 60 * 60 * 1000)
+    }, // 4 hours
+}));
 app.use(passport.initialize());
 app.use(passport.session()); // Required for persistent login sessions (optional, but recommended)
 
@@ -35,12 +43,10 @@ const {PORT, DATABASE_URL} = require('./config/database');
 
 //protected endpoint
 app.get('/stocksaver', isLoggedIn, function(req, res) {
-    console.log('logged in?')
-    res.status(200).json({message: 'success'});
-    // res.redirect('/');
-    // res.sendFile(__dirname + '/public/stocksaver.html', {user: req.user});
+    res.status(200).json({user: req.user});
 });
 
+//user logout
 app.get('/logout', function(req, res) {
     req.logout();
     req.session.destroy();
@@ -61,16 +67,91 @@ app.post('/login', passport.authenticate('local-login', {
     failureFlash: true
 }))
 
+//user delete
+app.delete('/destroy', isLoggedIn, function(req, res, next) {
+      User.findByIdAndRemove(req.user._id, {},
+      function(err, obj) {
+        if (err) next(err);
+        req.session.destroy(function(error) {
+          if (err) {
+            next(err)
+          }
+        });
+        res.json(200, obj);
+    });
+})
+
+//user retrieval
+app.get('/stocksaver/user', isLoggedIn, function(req, res, next) {
+    // let stocks = req.user.stocks
+    res.status(200).json({user: req.user});
+});
+
+//stock retrieval
+app.get('/stocksaver/stocks', isLoggedIn, function(req, res, next) {
+    // let stocks = req.user.stocks
+    res.status(200).json({user: req.user});
+});
+
+//stock save
+app.post('/stocksaver/stocks', isLoggedIn, function(req, res, next) {
+    // **ADD IF STOCK EXISTS
+    let id = req.user._id
+    User.findByIdAndUpdate(id, {
+        $push: {
+            stocks: {
+                stock: req.body.stock,
+                price: req.body.price
+            }
+        }
+    }, function(err, _user) {
+        res.status(200).json({message: 'stock saved'});
+    });
+});
+
+//stock delete
+app.delete('/stocksaver/stocks', isLoggedIn, function(req, res, next) {
+    let stockId = req.body.id;
+    User.findById(req.user._id, function(err, res) {
+        if (err) {
+            console.error(err)
+        }
+        let stocks = res.stocks
+        function findStock(stock) {
+            // console.log('STOCK ID: ', typeof stock._id)
+            // console.log('SEARCH ID: ', typeof stockId)
+            if (stock._id.toString() === stockId) {
+                return stock
+            }
+        }
+        let stockIndex = stocks.findIndex(findStock);
+        stocks.splice(stockIndex, 1);
+        User.findByIdAndUpdate(req.user._id, {
+            $set: {
+                stocks: stocks
+            }
+        }, function(err, res) {
+            // console.error(err)
+
+        });
+    })
+
+    res.status(204).json({message: 'Deleted Stock.'})
+
+})
+
+//Check if user is logged in
 function isLoggedIn(req, res, next) {
-    console.log('isLoggedIn req', req.isAuthenticated())
-    if (req.isAuthenticated()){
+    // console.log('isLoggedIn req', req.isAuthenticated())
+    if (req.isAuthenticated()) {
         return next();
+    } else {
+        return res.redirect('/login.html');
     }
-    return res.redirect('/login.html');
 }
 
 passport.serializeUser(function(user, done) {
-    done(null, user._id);
+    done(null, user.id);
 });
 
 passport.deserializeUser(function(id, done) {
@@ -81,10 +162,11 @@ passport.deserializeUser(function(id, done) {
 
 passport.use('local-signup', new LocalStrategy(function(username, password, done) {
     //process.nextTick(function() {
+    username = username.toLowerCase()
     User.findOne({username: username}).exec().then(_user => {
         let user = _user;
         if (user) {
-            console.log('User already exists');
+            console.error('User already exists');
             return done(null, false, req.flash('message', 'User Already Exists'));
         } else {
             console.log('creating user');
@@ -108,6 +190,7 @@ passport.use('local-signup', new LocalStrategy(function(username, password, done
 
 passport.use('local-login', new LocalStrategy(function(username, password, done) {
     let user;
+    username = username.toLowerCase()
     User.findOne({username: username}).exec().then(_user => {
         user = _user;
         if (!user) {
@@ -119,8 +202,6 @@ passport.use('local-login', new LocalStrategy(function(username, password, done)
             console.log('Invalid Password');
             return done(null, false, req.flash('message', 'Invalid Password'));
         } else {
-            console.log('USER', user);
-
             console.log('Valid Password');
             return done(null, user);
         }

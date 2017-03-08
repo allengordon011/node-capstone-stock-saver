@@ -1,47 +1,177 @@
 body {
-    background: url(images/stock-ticker-board.jpg) no-repeat center center fixed;
+    background: linear-gradient(
+      rgba(0, 0, 0, 0.45),
+      rgba(0, 0, 0, 0.45)
+    ), url(images/stock-ticker-board.jpg) no-repeat center center fixed ;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-
+    /*padding:20px;*/
+    font-family: 'News Cycle', sans-serif;
+    padding-bottom: 150px;
 }
 
-main {
-    font-family: 'Roboto', sans-serif;
-    background: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/*font-family: 'Roboto', sans-serif;*/
+
+.jumbotron {
+    margin: 35px auto 0px;
+    padding: 50px;
+    width: 475px;
+}
+
+#jumbotron-home {
+    margin: 100px auto 0px;
+}
+
+img {
+    width: 140px; height: 140px;
+}
+
+.fa-sign-out {
+    float: right;
+    line-height: 1.428571429;
+    padding-left: 5px;
+}
+
+.fa-times {
+    text-align: middle;
+    float: right;
+    line-height: 1.428571429;
+    padding-left: 5px;
+    color: red;
+}
+
+th {
+    font-weight: bold;
+    text-align: center;
+}
+
+td {
+    vertical-align: middle !important;
+    text-align: center;
+    padding: 3px;
 }
 
 form {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
+    margin: auto;
+    text-align: center;
+    width: 300px;
 }
 
-.flex-container li {
-    display: flex;
-    list-style-type: none;
-    flex-wrap: wrap;
-    align-items: center;
-    padding-bottom: 5px;
-    padding-top: 3px;
+placeholder {
+    text-align: center;
 }
 
-.flex-container li button {
-    padding: 8px 16px;
-    border: none;
-    background: #333;
-    color: #f2f2f2;
-    text-transform: uppercase;
-    letter-spacing: .09em;
-    border-radius: 2px;
-    font-size: 10px;
+#js-stock-search {
+    margin: auto;
+    text-align: center;
+    width: 50px;
+    padding: 0px;
 }
 
-.alert alert-warning {
-    display: false;
+#js-logout {
+    float: right;
+}
+
+#delete-user {
+    float: right;
+}
+
+.panel-footer {
+    margin: 0 auto 50px;
+    text-align: center;
+    width: 475px;
+}
+
+#results {
+    margin-top: 10px;
+    display: none;
+}
+
+#save-stocks-button {
+    display: none;
+}
+
+#saved-stocks {
+    display: none;
+    margin: 15px;
+    font-style: italic;
+}
+
+#confirm-user-delete {
+    display: none;
+}
+
+#do-user-delete {
+    display: none;
+}
+
+#cancel-user-delete {
+    display: none;
+}
+
+#delete-stock-button {
+    padding: 0px;
+    color: red;
+}
+
+.alert {
+    display: none;
+    margin-top: 10px;
+    margin-bottom: none !important;
+}
+
+ul {
+    list-style: none;
+    padding-left: 0;
+    padding-right: 0;
+
+}
+
+
+.affix {
+      top: 0;
+      width: 100%;
+  }
+
+.affix-top {
+width: 100%;
+}
+
+.affix-bottom {
+position: absolute;
+width: 100%;
+}
+
+.container-fluid {
+    background-color: #eee;
+    text-align: center;
+    vertical-align: middle;
+    height: 135px;
+    top: 0
+}
+
+#button-container {
+    width: 100%;
+    display: block;
+    padding-right: 0;
+}
+
+#delete-buttons {
+    text-align: right;
+}
+
+h1 {
+    font-family: 'Anton', sans-serif;
+    font-size: 60px;
+    text-align: center;
+    padding-top: 25px;
+    margin: 0;
+}
+
+#lead {
+    font-size: 12px;
+    text-align: right;
+    padding-right: 5px;
 }

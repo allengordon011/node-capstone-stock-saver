@@ -6,36 +6,75 @@
 <!--    <link id="favicon" rel="icon" href="https://hyperdev.com/favicon-app.ico" type="image/x-icon"> !-->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Anton|News+Cycle|Roboto:300" rel="stylesheet">
 
     <link rel="stylesheet" href="/style.css">
   </head>
   <body>
-      <div class="col-sm-8 col-sm-offset-2">
-          <div class="jumbotron text-center">
-              <h1>Stock Saver</h1>
-              <p class="lead">An app to help you track your stocks.</p>
-              <form id="search">
-                  <div class="form-group">
-                      <label>Stock price search</label>
-                  <input type="text" name="stock" placeholder="Enter company name/symbol">
-                </div>
-                  <div>
-                    <input type="submit" class="form-control" id="js-stock-search"  value="Submit" />
-                  </div>
-              </form>
-              <div id="results">
-                  <button class="btn btn-default">Save results?</button>
+      <div class="container-fluid" data-spy="affix">
+          <h1>Stock Saver</h1>
+            <p class="lead">An app to help you track your stocks.</p>
+        </div>
+      <div class="container" data-spy="affix" id="button-container">
+<button class="btn btn-primary" id="js-logout"><i class="fa fa-sign-out"></i> Logout
+        <button class="btn btn-primary" id="delete-user"><i class="fa fa-times" aria-hidden="true"></i> Delete Account
+        </div>
+
+            <div id="delete-buttons">
+                <button class="btn btn-warning" id="confirm-user-delete"> Are you sure?
+             <button class="btn btn-danger" id="do-user-delete"> Yes
+              <button class="btn btn-success" id="cancel-user-delete"> No
+             </div>
+          <div class="col-sm-8 col-sm-offset-2">
+              <div class="jumbotron text-center">
+
+                  <section id="js-user"></section>
+                  <form id="stock-search">
+                      <div class="form-group">
+                          <label>Stock price search</label>
+                      <input type="text" name="stock" class="form-control" placeholder="Enter company name/symbol" style="text-align:center">
+
+                    </div>
+                      <div>
+                        <button type="submit" class="form-control" id="js-stock-search"> <span class="glyphicon glyphicon-search" type="submit" id="js-stock-search"></span></button>
+                    </div>
+                  </form>
+                  <div id="results-container">
+                  <div class="alert alert-warning"></div>
+                  <div id="results"></div>
+                      <button type="submit" id="save-stocks-button" class="btn btn-default">Save results</button>
               </div>
-              <div id="saved">Saved stocks</div>
-            <button class="btn btn-default" id="js-logout"><span class="fa fa-sign-out"></span> Logout</a>
           </div>
+              <div class="panel-footer">
+                <button type="submit" id="view-stocks-button" class="btn btn-default">View saved stocks</button>
+                  <div id="saved-stocks">
+                      <table class="table table-striped">
+                          <thead>
+                              <tr>
+                                  <th>STOCK</th>
+                                  <th>PRICE</th>
+                                  <th></th>
+                              </tr>
+                          </thead>
+                          <tbody id="stocks-table">
+                          </tbody>
+                      </table>
+                  </div>
+
+              </div>
+      </div>
           <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
           <script src="app.js"></script>
+          <script>
+// <!--use getJSON?!-->
+        //   $(document).ready(function() {
+        //       $('#js-user').html(`Hi, ${req.user.username}.`)
+        //   })
+
+      </script>
 
   </body>
 </html>

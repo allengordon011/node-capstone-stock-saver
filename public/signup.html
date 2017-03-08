@@ -1,53 +1,47 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Stock Saver Signup</title>
+    <meta name="description" content="Financial stock search and save tool">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <!-- load bootstrap css -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <!-- load fontawesome -->
+    <link href="https://fonts.googleapis.com/css?family=Anton|News+Cycle|Roboto:300" rel="stylesheet">
 
-    <style>
-        body {
-            padding-top: 50px;
-        }
-
-        img {
-            width: 140px;
-            height: 140px;
-        }
-
-        .fa-sign-out {
-            float: right;
-        }
-    </style>
+    <link rel="stylesheet" href="/style.css">
 
 </head>
 
 <body>
-    <div class="col-sm-8 col-sm-offset-2">
-        <div class="jumbotron text-center">
-            <h1><span class="fa fa-sign-in"></span> Signup</h1>
+        <div class="col-sm-8 col-sm-offset-2">
+            <div class="jumbotron text-center">
+                <h1><span class="fa fa-sign-in"></span> Signup</h1>
 
-            <form id="js-signup-form">
-                <div class="form-group">
-                    <label>Username</label>
-                    <input type="text" class="form-control" name="username">
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" class="form-control" name="password" />
-                </div>
-                <div>
-                    <input type="submit" class="form-control" value="Submit" />
-                </div>
-            </form>
+                <form id="js-signup-form">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" class="form-control" name="username">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" class="form-control" name="password" />
+                    </div>
+                    <div>
+                        <input type="submit" class="form-control" value="Submit" />
+                    </div>
+                </form>
 
+            </div>
+            <hr>
+            <div class="panel-footer">
+             Already have an account? <span class="fa fa-sign-in"></span><a href="/login.html"> Login</a>
+            <p>Or go <a href="/">home</a>.</p>
         </div>
-        <hr>
-        <span class="fa fa-sign-in"> Already have an account?<a href="/login.html"> Login</a></span>
-        <p>Or go <a href="/">home</a>.</p>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
