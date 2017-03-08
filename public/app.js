@@ -1,6 +1,3 @@
-// const {PORT} = require('./config/database');
-
-
 //signup
 $('#js-signup-form').submit(function(event) {
     event.preventDefault();
