@@ -71,17 +71,17 @@ app.post('/login', passport.authenticate('local-login', {
 
 //user delete
 app.delete('/destroy', isLoggedIn, function(req, res, next) {
-    console.log('USER DELETE REQ SESSION USER: ', req.session.user)
-    //   User.findByIdAndRemove(req.session.user._id, {},
-    //   function(err, obj) {
-    //     if (err) next(err);
-    //     req.session.destroy(function(error) {
-    //       if (err) {
-    //         next(err)
-    //       }
-    //     });
-    //     res.json(200, obj);
-    // });
+    // console.log('USER DELETE REQ SESSION USER: ', req.user)
+      User.findByIdAndRemove(req.user._id, {},
+      function(err, obj) {
+        if (err) next(err);
+        req.session.destroy(function(error) {
+          if (err) {
+            next(err)
+          }
+        });
+        res.json(200, obj);
+    });
 })
 
 //stock retrieval
@@ -92,7 +92,6 @@ app.get('/stocksaver/stocks', isLoggedIn, function(req, res, next) {
 
 //stock save
 app.post('/stocksaver/stocks', isLoggedIn, function(req, res, next) {
-    console.log('REQ5: ', req.body)
     // **ADD IF STOCK EXISTS
     let id = req.user._id
     User.findByIdAndUpdate(id, {
@@ -142,7 +141,7 @@ app.delete('/stocksaver/stocks', isLoggedIn, function(req, res, next) {
 
 //Check if user is logged in
 function isLoggedIn(req, res, next) {
-    console.log('isLoggedIn req', req.isAuthenticated())
+    // console.log('isLoggedIn req', req.isAuthenticated())
     if (req.isAuthenticated()) {
         return next();
     } else {
@@ -164,11 +163,11 @@ passport.deserializeUser(function(id, done) {
 
 passport.use('local-signup', new LocalStrategy(function(username, password, done) {
     //process.nextTick(function() {
-    username.toLowerCase()
+    username = username.toLowerCase()
     User.findOne({username: username}).exec().then(_user => {
         let user = _user;
         if (user) {
-            console.log('User already exists');
+            console.error('User already exists');
             return done(null, false, req.flash('message', 'User Already Exists'));
         } else {
             console.log('creating user');
@@ -195,7 +194,6 @@ passport.use('local-login', new LocalStrategy(function(username, password, done)
     username = username.toLowerCase()
     User.findOne({username: username}).exec().then(_user => {
         user = _user;
-        console.log('FOUND: ', user)
         if (!user) {
             return done(null, false, {message: 'Incorrect username'});
         }

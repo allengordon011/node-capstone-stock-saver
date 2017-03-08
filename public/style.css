@@ -7,20 +7,16 @@ body {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    padding:20px;
+    /*padding:20px;*/
     font-family: 'News Cycle', sans-serif;
 }
 
 /*font-family: 'Roboto', sans-serif;*/
 
-h1 {
-    font-family: 'Anton', sans-serif;
-}
-
 .jumbotron {
     margin: 30px auto 0;
     padding: 50px;
-    /*width: 600px;*/
+    width: 475px;
 }
 
 img {
@@ -35,6 +31,8 @@ img {
 
 .fa-times {
     text-align: middle;
+    float: right;
+
 }
 
 th {
@@ -47,9 +45,6 @@ td {
     text-align: center;
     padding: 3px;
 }
-/*.fa-sign-in {
-    padding-left: 5px;
-}*/
 
 form {
     margin: auto;
@@ -68,9 +63,18 @@ placeholder {
     padding: 0px;
 }
 
+#js-logout {
+    float: right;
+}
+
+#delete-user {
+    float: right;
+}
+
 .panel-footer {
     margin: auto;
     text-align: center;
+    width: 475px;
 }
 
 #results {
@@ -88,6 +92,18 @@ placeholder {
     font-style: italic;
 }
 
+#confirm-user-delete {
+    display: none;
+}
+
+#do-user-delete {
+    display: none;
+}
+
+#cancel-user-delete {
+    display: none;
+}
+
 .alert {
     display: none;
     margin-top: 10px;
@@ -97,4 +113,52 @@ placeholder {
 ul {
     list-style: none;
     padding-left: 0;
+    padding-right: 0;
+
+}
+
+
+.affix {
+      top: 0;
+      width: 100%;
+  }
+
+.affix-top {
+width: 100%;
+}
+
+.affix-bottom {
+position: absolute;
+width: 100%;
+}
+
+.container-fluid {
+    background-color: #eee;
+    text-align: center;
+    vertical-align: middle;
+    height: 120px;
+    top: 0
+}
+
+#button-container {
+    width: 100%;
+    display: block;
+    padding-right: 0;
+}
+
+#delete-buttons {
+    text-align: right;
+}
+
+h1 {
+    font-family: 'Anton', sans-serif;
+    text-align: center;
+    padding-top: 25px;
+    margin: 0;
+}
+
+#lead {
+    font-size: 12px;
+    text-align: right;
+    padding-right: 5px;
 }

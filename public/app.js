@@ -1,9 +1,4 @@
-//stock API
-// const fetchAPI_URL = 'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22'+stock+'%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback='
-
-// 'http://finance.google.com/finance/info?client=ig&q='
-
-//event listeners
+//signup
 $('#js-signup-form').submit(function(event) {
     event.preventDefault();
 
@@ -26,6 +21,7 @@ $('#js-signup-form').submit(function(event) {
     })
 });
 
+//login
 $('#js-login-form').on('submit', function(event) {
     event.preventDefault();
 
@@ -49,13 +45,13 @@ $('#js-login-form').on('submit', function(event) {
     })
 });
 
+//logout
 $('#js-logout').click(function(event) {
     event.preventDefault();
-    $.ajax({type: 'GET', url: 'http://localhost:8080/logout'}).then(function(res) {
-
+    $.ajax({type: 'GET', url: 'http://localhost:8080/logout'})
+    .then(function(res) {
         window.location = '/index.html';
         console.log('User Logged Out')
-        console.log('RES: ', res)
     }).fail(function(err) {
         console.log('AJAX FAIL')
         $('.alert.alert-warning').toggle(200).append('ERROR')
@@ -64,6 +60,7 @@ $('#js-logout').click(function(event) {
     })
 })
 
+//stock search
 $('#stock-search').submit(function(event) {
     event.preventDefault();
     let stock = event.target.stock.value;
@@ -91,7 +88,9 @@ $('#stock-search').submit(function(event) {
             $('#results').show(300).html('The last trading price of ' + companyName + ' (' + stock + ') was: $' + lastPrice)
             $('#save-stocks-button').show(1000)
         }
-        $('#save-stocks-button').one('click', function(event) {
+
+        //save stocks
+        $('#save-stocks-button').on('click', function(event) {
 
             $.ajax({type: 'POST', data: JSON.stringify(obj), url: 'http://localhost:8080/stocksaver/stocks', contentType: "application/json", dataType: "json"})
         });
@@ -102,6 +101,7 @@ $('#stock-search').submit(function(event) {
     });
 })
 
+//view saved stocks
 $('#view-stocks-button').on('click', function() {
     $.ajax({type: 'GET', url: 'http://localhost:8080/stocksaver/stocks'})
     .then(function(req, res) {
@@ -119,7 +119,7 @@ $('#view-stocks-button').on('click', function() {
 });
 
 //delete saved stock
-$('#saved-stocks').on('click', 'a', function(event) {
+$('#saved-stocks').on('click', 'a', function() {
     let stockId = $(this).attr("value");
     $(this).closest('tr').remove();
 
@@ -136,3 +136,27 @@ $('#saved-stocks').on('click', 'a', function(event) {
         console.log(err);
     });
 });
+
+//delete user
+$('#delete-user').on('click', function() {
+    $('#confirm-user-delete').show(200)
+    $('#do-user-delete').show(200).on('click', function() {
+    $.ajax({
+        type: 'DELETE',
+        url: 'http://localhost:8080/destroy'
+    })
+    .then(function(req, res) {
+        window.location = '/index.html';
+    })
+    .fail(function(err) {
+        console.log('Failed to delete')
+        $('.alert.alert-warning').toggle(300).html('DELETION ERROR')
+        console.log(err);
+    });
+    });
+    $('#cancel-user-delete').show(200).on('click', function() {
+        $('#confirm-user-delete').hide(200)
+        $('#do-user-delete').hide(200)
+        $('#cancel-user-delete').hide(200)
+    });
+})

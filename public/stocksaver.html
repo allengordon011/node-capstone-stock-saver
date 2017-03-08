@@ -14,10 +14,23 @@
     <link rel="stylesheet" href="/style.css">
   </head>
   <body>
+      <div class="container-fluid" data-spy="affix">
+          <h1>Stock Saver</h1>
+            <p class="lead">An app to help you track your stocks.</p>
+        </div>
+      <div class="container" data-spy="affix" id="button-container">
+<button class="btn btn-default" id="js-logout"><i class="fa fa-sign-out"></i> Logout
+        <button class="btn btn-default" id="delete-user"><i class="fa fa-times" aria-hidden="true"></i> Delete Account
+        </div>
+
+            <div id="delete-buttons">
+                <button class="btn btn-warning" id="confirm-user-delete"> Are you sure?
+             <button class="btn btn-danger" id="do-user-delete"> Yes
+              <button class="btn btn-success" id="cancel-user-delete"> No
+             </div>
           <div class="col-sm-8 col-sm-offset-2">
               <div class="jumbotron text-center">
-                  <h1>Stock Saver</h1>
-                  <p class="lead">An app to help you track your stocks.</p>
+
                   <section id="js-user"></section>
                   <form id="stock-search">
                       <div class="form-group">
@@ -50,7 +63,7 @@
                           </tbody>
                       </table>
                   </div>
-                <button class="btn btn-default" id="js-logout"><span class="fa fa-sign-out"></span> Logout</a>
+
               </div>
       </div>
           <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
