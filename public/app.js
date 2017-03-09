@@ -1,4 +1,4 @@
-//signup
+//signup user
 $('#js-signup-form').submit(function(event) {
     event.preventDefault();
 
@@ -21,7 +21,7 @@ $('#js-signup-form').submit(function(event) {
     })
 });
 
-//login
+//login user
 $('#js-login-form').on('submit', function(event) {
     event.preventDefault();
 
@@ -58,7 +58,7 @@ $(document).ready(function(){
 
 })
 
-//logout
+//logout user
 $('#js-logout').click(function(event) {
     event.preventDefault();
     $.ajax({type: 'GET', url: '/logout'}).then(function(res) {
@@ -71,7 +71,28 @@ $('#js-logout').click(function(event) {
         console.log(err);
     })
 })
+
+//delete user
+$('#delete-user').on('click', function() {
+    $('#confirm-user-delete').show(200)
+    $('#do-user-delete').show(200).on('click', function() {
+        $.ajax({type: 'DELETE', url: '/destroy'}).then(function(req, res) {
+            window.location = '/index.html';
+        }).fail(function(err) {
+            console.log('Failed to delete')
+            $('.alert.alert-warning').toggle(300).html('DELETION ERROR')
+            console.log(err);
+        });
+    });
+    $('#cancel-user-delete').show(200).on('click', function() {
+        $('#confirm-user-delete').hide(200)
+        $('#do-user-delete').hide(200)
+        $('#cancel-user-delete').hide(200)
+    });
+})
+
 let obj;
+
 //stock search
 $('#stock-search').submit(function(event) {
     event.preventDefault();
@@ -151,22 +172,3 @@ $('#saved-stocks').on('click', 'a', function() {
         console.log(err);
     });
 });
-
-//delete user
-$('#delete-user').on('click', function() {
-    $('#confirm-user-delete').show(200)
-    $('#do-user-delete').show(200).on('click', function() {
-        $.ajax({type: 'DELETE', url: '/destroy'}).then(function(req, res) {
-            window.location = '/index.html';
-        }).fail(function(err) {
-            console.log('Failed to delete')
-            $('.alert.alert-warning').toggle(300).html('DELETION ERROR')
-            console.log(err);
-        });
-    });
-    $('#cancel-user-delete').show(200).on('click', function() {
-        $('#confirm-user-delete').hide(200)
-        $('#do-user-delete').hide(200)
-        $('#cancel-user-delete').hide(200)
-    });
-})

@@ -6,7 +6,7 @@ deploy:
   provider: heroku
   api_key:
     secure: hXmg+7WOFfh5Di75p7odQGjUX78RayV3Q5s7Pyp0lGWlzMDgBzv2iBkY1O8FScTSW9QoCz/B9d/ZCMt9x2GW92hnNfdHD5BqWVyC3/YlSvzsVSll8iR06FcYcs64Z0obiUaUhMCiBo3+Dso4dHnazFDjn54t7haMxmaGhE8PAB5cqdSDIpmmN5R7wlct5sTBn2284peswluyMXFZgT4UJYssynuCKNqJpWhr8apSXdmjPkP98o2FSMvgPSrpXaIqGH3YOe5KZNO5GMX+DkZSY2IRl0TYsC0D3LXxuDZ3HKxagTkmMjMdjrPLoTPtMG40Hw2iUNqV7ndY/ioCLYqobJKFGFICu5izzTK1+ok9ba6vxqXa9HdBW8h37ZToDHMkCde3B07y/R9fBqiFIyoYpFqAhyQvB04yJDAt81pv84fO0grN3j1M34G6FTr0sY5UzTtsKsNLFue5t0+ARigU6qpM1YdKFWMMdz+RDdzyvaDY1bFJ7Hfx+VccanGUw1QUDBpBMo1g44zNivZKBsHqX/iEKMx9p/fY2lRL6CKfXTGQ59Z9/vAHQc6Vt5SEChzjt1Dx3Dwto1SwMgPcz/s+GVbrhCd/Fu9VEbF0PkZxClMhZIbWRCUVDE41OE+vSq1XO3GmaPpusTnDulRonHf3H1n6+ym5hVdH7HydM+PWPnE=
-  app: node-capstone-stock-trax
+  app: node-capstone-stock-saver
   on:
-    repo: trig010/node-capstone-stock-trax
+    repo: trig010/node-capstone-stock-saver
     branch: dev

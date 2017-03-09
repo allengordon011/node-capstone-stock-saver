@@ -15,103 +15,134 @@ chai.use(chaiHttp);
 
 function generateUsers() {
     const users = [
-        {
-            username: 'fido',
-            password: 'woof',
-            stox: ['appl', 'goog']
-        }, {
-            username: 'toto',
-            password: 'woof',
-            stox: ['lmht', 'xyz']
-        }
-    ]
-    console.log('Creating database')
-    return User.insertMany(users);
-}
-
-function tearDownDb() {
-    console.warn('Deleting database');
-    return mongoose.connection.dropDatabase();
-}
-
-describe('Stock Saver API', function() {
-    before(function() {
-        return runServer(TEST_DATABASE_URL);
-    });
-    beforeEach(function() {
-        return generateUsers();
-    });
-
-    afterEach(function() {
-        return tearDownDb();
-    });
-    after(function() {
-        return closeServer();
-    });
-
-    describe('load HTML', function() {
-        it('should load the index.html file from the root url', function() {
-            return chai.request(app).get('/').then(function(res) {
-                res.should.have.status(200);
-                res.should.be.html;
-            });
-        });
-        it('should load the stocksaver.html file from the stocksaver url', function() {
-            return chai.request(app).get('/stocksaver').then(function(res) {
-                res.should.have.status(200);
-                res.should.be.html;
-            });
-        });
-    });
-    describe('GET endpoint', function() {
-        it('should return a user', function() {
-            return chai.request(app).get('/users/').send({username: 'fido', password: 'woof'}).then(function(res) {
-                res.should.have.status(200);
-                res.should.be.json;
-            });
-        });
-    });
-
-    describe('POST endpoint', function() {
-        it('should create a user', function() {
-            const newUser = {
-                username: 'spot',
+                {
+            {
+                "_id": {
+                    "$oid": "52bfa2fe453f0048c6d3221c"
+                },
+                username: 'fido',
                 password: 'woof',
-                stox: ['abc', 'def']
-            };
-            return chai.request(app).post('/users').send(newUser).then(function(res) {
-                res.should.have.status(201);
-                // res.should.be.json;
-                // res.should.include('username');
+                stocks: [
+                    {
+                        'stock': 'appl',
+                        'price': 200,
+                        "_id": {
+                            "$oid": "58bf9b6d5f5cb6470bedcb5e"
+                        }
+                    }, {
+                        'stock': 'goog',
+                        'price': 1000,
+                        "_id": {
+                            "$oid": "58bf9b2d5f5bb6470bedcb5e"
+                        }
+                    }
+                ]
+            }, {
+                {
+                    "_id": {
+                        "$oid": "28bfa2fe453f0048c6d3221c"
+                    },
+                    username: 'toto',
+                    password: 'woof',
+                    stocks: [
+                        {
+                            'stock': 'cat',
+                            'price': 100,
+                            "_id": {
+                                "$oid": "58bf9b6d5f5bb6470eedcb5e"
+                            }
+                        }, {
+                            'stock': 'sbux',
+                            'price': 75,
+                            "_id": {
+                                "$oid": "58bf9b6d5f5bb6470bedcd5e"
+                            }
+                        }
+                    ]
+                }
+            ]
+            console.log('Creating database')
+            return User.insertMany(users);
+        }
+
+        function tearDownDb() {
+            console.warn('Deleting database');
+            return mongoose.connection.dropDatabase();
+        }
+
+        describe('Stock Saver API', function() {
+            before(function() {
+                return runServer(TEST_DATABASE_URL);
+            });
+            beforeEach(function() {
+                return generateUsers();
+            });
+
+            afterEach(function() {
+                return tearDownDb();
+            });
+            after(function() {
+                return closeServer();
+            });
+
+            describe('load HTML', function() {
+                it('should load the index.html file from the root url', function() {
+                    return chai.request(app).get('/').then(function(res) {
+                        res.should.have.status(200);
+                        res.should.be.html;
+                    });
+                });
+                // it('should load the stocksaver.html file from the stocksaver url', function() {
+                //     return chai.request(app).get('/stocksaver').then(function(res) {
+                //         res.should.have.status(200);
+                //         res.should.be.html;
+                //     });
+                // });
+            });
+            describe('GET endpoint', function() {
+                // it('should return a user', function() {
+                //     return chai.request(app).get('/users/').send({username: 'fido', password: 'woof'}).then(function(res) {
+                //         res.should.have.status(200);
+                //         res.should.be.json;
+                //     });
+                // });
+            });
+
+            describe('SIGNUP endpoint', function() {
+                it('should create a user', function() {
+                    const newUser = {
+                        username: 'spot',
+                        password: 'woof'
+                    };
+                    return chai.request(app).post('/signup').send(newUser).then(function(res) {
+                        // res.should.have.status(201);
+                        // res.should.be.json;
+                        // res.should.include('username');
+                    });
+                });
+            })
+
+            describe('LOGIN endpoint', function() {
+                it('should login a user', function() {
+
+            })
+
+            describe('LOGOUT endpoint', function() {
+                it('should logout a user', function() {
+
+            })
+
+            describe('DELETE endpoint', function() {
+                it('should delete a user', function() {
+
+                    // return chai.request(app)
+                    // .put('/users/:username')
+                    // .send(updateUser)
+                    // .then(function(res) {
+                    //     res.should.have.status(201);
+                    //     // res.should.be.json;
+                    //     // res.should.include('username');
+
+                });
             });
         });
-    })
-    describe('PUT endpoint', function() {
-        it('should edit a username', function() {
-            const updateData = {
-                username: 'spike'
-            };
-            // return chai.request(app)
-            // .put('/users/:username')
-            // .send(updateUser)
-            // .then(function(res) {
-            //     res.should.have.status(201);
-            //     // res.should.be.json;
-            //     // res.should.include('username');
-
-            return User.findOne().exec().then(function(user) {
-                console.log('PUT: USER', user)
-                updateData.id = user._id;
-                return chai.request(app).put(`/users/${user.id}`).send({
-                    password: 'woof'
-                }, updateData);
-            }).then(function(res) {
-                res.should.have.status(204);
-
-                return User.findById(updateData.id).exec();
-            }).then(function(user) {
-                user.username.should.equal(updateData.title);
-            });
-        });
-    });
-});
