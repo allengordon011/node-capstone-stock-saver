@@ -68,13 +68,13 @@ app.post('/login', passport.authenticate('local-login', {
 
 //user delete
 app.delete('/destroy', isLoggedIn, function(req, res, next) {
-      User.findByIdAndRemove(req.user._id, {},
-      function(err, obj) {
-        if (err) next(err);
+    User.findByIdAndRemove(req.user._id, {}, function(err, obj) {
+        if (err)
+            next(err);
         req.session.destroy(function(error) {
-          if (err) {
-            next(err)
-          }
+            if (err) {
+                next(err)
+            }
         });
         res.json(200, obj);
     });
@@ -100,7 +100,8 @@ app.post('/stocksaver/stocks', isLoggedIn, function(req, res, next) {
         $push: {
             stocks: {
                 stock: req.body.stock,
-                price: req.body.price
+                price: req.body.price,
+                time: req.body.time
             }
         }
     }, function(err, _user) {
@@ -166,25 +167,19 @@ passport.use('local-signup', new LocalStrategy(function(username, password, done
         let user = _user;
         if (user) {
             console.error('User already exists');
-            return done(null, false, req.flash('message', 'User Already Exists'));
-        } else {
-            console.log('creating user');
-            return User.find({username}).count().exec().then(count => {
-                if (count > 0) {
-                    return res.status(422).json({message: 'username already taken'});
-                }
-                // if no existing user, hash password
-                return User.hashPassword(password)
-            }).then(hash => {
-                return User.create({username: username, password: hash}).then(user => {
-                    // console.log(user)
-                    // return user.apiRepr();
-                    done(null, user);
-                    // return
-                });
-            });
+            return done(null, false);
         }
+        console.log('Creating user');
+        return User.hashPassword(password)
+
+    }).then(hash => {
+        return User.create({username: username, password: hash}).then(user => {
+            done(null, user);
+        });
     })
+    .catch(function () {
+         console.error("Promise Rejected");
+    });
 }));
 
 passport.use('local-login', new LocalStrategy(function(username, password, done) {
@@ -199,11 +194,14 @@ passport.use('local-login', new LocalStrategy(function(username, password, done)
     }).then(isValid => {
         if (!isValid) {
             console.log('Invalid Password');
-            return done(null, false, req.flash('message', 'Invalid Password'));
+            return done(null, false, {message: 'Invalid Password'});
         } else {
             console.log('Valid Password');
             return done(null, user);
         }
+    })
+    .catch(function () {
+         console.error("Promise Rejected");
     });
 }));
 

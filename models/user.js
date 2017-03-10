@@ -13,16 +13,10 @@ const UserSchema = mongoose.Schema({
     },
     stocks: [{
         stock: String,
-        price: Number
+        price: Number,
+        time: String
     }]
 });
-
-UserSchema.methods.apiRepr = function() {
-    return {
-        username: this.username || '',
-        stocks: this.stocks || []
-    };
-}
 
 UserSchema.methods.isValidPassword = function(password) {
     return bcrypt.compare(password, this.password);

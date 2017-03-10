@@ -1,7 +1,6 @@
 //signup user
 $('#js-signup-form').submit(function(event) {
     event.preventDefault();
-
     let obj = {
         username: event.target.username.value,
         password: event.target.password.value
@@ -14,9 +13,8 @@ $('#js-signup-form').submit(function(event) {
         console.log('RES: ', res)
         window.location = '/stocksaver.html';
     }).fail(function(err) {
-        console.log('AJAX FAIL')
-        $('.alert.alert-warning').toggle(200).append('ERROR')
-        window.location = '/signup.html';
+        console.log('SIGNUP FAIL')
+        $('.alert.alert-warning').text("")
         console.log(err)
     })
 });
@@ -24,7 +22,6 @@ $('#js-signup-form').submit(function(event) {
 //login user
 $('#js-login-form').on('submit', function(event) {
     event.preventDefault();
-
     user = {
         username: event.target.username.value,
         password: event.target.password.value
@@ -36,27 +33,23 @@ $('#js-login-form').on('submit', function(event) {
     $.ajax({type: 'POST', data: JSON.stringify(user), url: '/login', contentType: "application/json", dataType: "json"}).then(function() {
         window.location = '/stocksaver.html';
     }).fail(function(err) {
-        console.log('AJAX FAIL')
-        $('.alert.alert-warning').toggle(200).append('ERROR')
-        window.location = '/login.html';
+        console.log('LOGIN FAIL')
+        $('.alert.alert-warning').text("")
+        $('.alert.alert-warning').show(200).append("Please try again.")
         console.log(err);
     })
 });
 
 //get username
-$(document).ready(function(){
     if (window.location.href.indexOf("stocksaver") > -1) {
     $.ajax({type: 'GET', url: '/stocksaver/user'}).then(function(req, res) {
         function capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
-}
-        let username = capitalize(req.user.username);
-        $('#js-user').html(`Hi, ${username}.`)
-
+    }
+    let username = capitalize(req.user.username);
+    $('#js-user').html(`Hi, ${username}.`)
     })
     }
-
-})
 
 //logout user
 $('#js-logout').click(function(event) {
@@ -97,7 +90,6 @@ let obj;
 $('#stock-search').submit(function(event) {
     event.preventDefault();
     let stock = event.target.stock.value;
-    // console.log('STOCK: ', stock)
     $('#results').hide(200).val('')
     $('.alert').hide(200).html('')
     $('#save-button').hide(200)
@@ -110,15 +102,21 @@ $('#stock-search').submit(function(event) {
         let companyName = res.query.results.quote.Name;
         let askPrice = res.query.results.quote.Ask;
         let lastPrice = res.query.results.quote.LastTradePriceOnly;
+        let date = new Date()
+        let options = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric'
+        };
+        let dateTime = new Intl.DateTimeFormat('en-US', options).format(date);
         obj = {
             stock: stock,
-            price: lastPrice
+            price: lastPrice,
+            time: dateTime
         }
+        console.log(obj.time)
         if (companyName === null) {
             $('.alert').show(300).html('Sorry, that stock was not found.')
         } else {
 
-            $('#results').show(300).html('The last trading price of ' + companyName + ' (' + stock + ') was: $' + lastPrice)
+            $('#results').show(300).html('The last trading price of ' + companyName + ' (' + stock + ') was: $' + lastPrice + '.')
             $('#save-stocks-button').show(1000)
         }
     });
@@ -126,10 +124,10 @@ $('#stock-search').submit(function(event) {
 
 //save stocks
 $('#save-stocks-button').on('click', function(event) {
-
+    $('#saved-stocks-empty').hide()
     $.ajax({type: 'POST', data: JSON.stringify(obj), url: '/stocksaver/stocks', contentType: "application/json", dataType: "json"}).then(function(res) {
         console.log('save res: ', res)
-            $('#stocks-table').append( `<tr><td>${obj.stock}</td><td>$${obj.price}</td><td><a class="btn btn-small" id="delete-stock-button" value="${obj._id}"><i class="fa fa-times" aria-hidden="true"></i> Delete Stock</a></td></tr>`)
+            $('#stocks-table').prepend( `<tr><td>${obj.stock}</td><td>$${obj.price}</td><td>${obj.time}</td><td><a class="btn btn-small" id="delete-stock-button" value="${obj._id}"><i class="fa fa-times" aria-hidden="true"></i> Delete Stock</a></td></tr>`)
     }).fail(function(err) {
         console.log('AJAX FAIL')
         $('.alert.alert-warning').toggle(300).html('ERROR')
@@ -142,10 +140,14 @@ $('#view-stocks-button').on('click', function() {
     $.ajax({type: 'GET', url: '/stocksaver/stocks'}).then(function(req, res) {
         let stocks = req.user.stocks;
         if (stocks.length === 0) {
-            $('#saved-stocks').show(200).html(`<ul><li>You do not have any saved stocks yet.</li><ul>`)
+            $('#saved-stocks').show(200)
+            $('#stocks-table').html(`<tr><td></td><td></td><td></td><td></td></tr>`)
+            $('#saved-stocks-empty').show(200)
+
         } else {
+            $('#saved-stocks-empty').hide()
             let stocksList = Object.keys(stocks).map(function(key) {
-                return `<tr><td>${stocks[key].stock}</td><td>$${stocks[key].price}</td><td><a class="btn btn-small" id="delete-stock-button" value="${stocks[key]._id}"><i class="fa fa-times" aria-hidden="true"></i> Delete Stock</a></td></tr>`
+                return `<tr><td>${stocks[key].stock}</td><td>$${stocks[key].price}</td><td>${stocks[key].time}</td><td><a class="btn btn-small" id="delete-stock-button" value="${stocks[key]._id}"><i class="fa fa-times" aria-hidden="true"></i> Delete Stock</a></td></tr>`
             }).join("");
             $('#saved-stocks').show(200)
             $('#stocks-table').html(`${stocksList}`)

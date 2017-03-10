@@ -18,16 +18,7 @@
           <h1>Stock Saver</h1>
             <p class="lead">An app to help you track your stocks.</p>
         </div>
-      <div class="container" data-spy="affix" id="button-container">
-<button class="btn btn-primary" id="js-logout"><i class="fa fa-sign-out"></i> Logout
-        <button class="btn btn-primary" id="delete-user"><i class="fa fa-times" aria-hidden="true"></i> Delete Account
-        </div>
 
-            <div id="delete-buttons">
-                <button class="btn btn-warning" id="confirm-user-delete"> Are you sure?
-             <button class="btn btn-danger" id="do-user-delete"> Yes
-              <button class="btn btn-success" id="cancel-user-delete"> No
-             </div>
           <div class="col-sm-8 col-sm-offset-2">
               <div class="jumbotron text-center">
 
@@ -51,11 +42,13 @@
               <div class="panel-footer">
                 <button type="submit" id="view-stocks-button" class="btn btn-default">View saved stocks</button>
                   <div id="saved-stocks">
+                      <div id="saved-stocks-empty"><ul><li>You do not have any saved stocks yet.</li><ul></div>
                       <table class="table table-striped">
                           <thead>
                               <tr>
                                   <th>STOCK</th>
                                   <th>PRICE</th>
+                                  <th>TIME</th>
                                   <th></th>
                               </tr>
                           </thead>
@@ -63,8 +56,18 @@
                           </tbody>
                       </table>
                   </div>
-
               </div>
+              <div class="container" id="logout-container">
+        <button class="btn btn-primary" id="js-logout"><i class="fa fa-sign-out"></i> Logout</div>
+            <div class="container" id="delete-container">
+            <div id="delete-buttons">
+                <button class="btn btn-warning" id="confirm-user-delete"> Are you sure?
+             <button class="btn btn-danger" id="do-user-delete"> Yes
+              <button class="btn btn-success" id="cancel-user-delete"> No
+             </div>
+                <button class="btn btn-primary" id="delete-user"><i class="fa fa-times" aria-hidden="true"></i> Delete Account
+                </div>
+
       </div>
           <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
           <script src="app.js"></script>
