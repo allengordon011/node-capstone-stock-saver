@@ -21,7 +21,6 @@ app.use(morgan('common'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(jsonParser);
-app.use(flash());
 app.use(cookieParser('hunter'));
 app.use(session({
     secret: 'hunter',
@@ -31,6 +30,7 @@ app.use(session({
         maxAge: (4 * 60 * 60 * 1000)
     }, // 4 hours
 }));
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session()); // Required for persistent login sessions (optional, but recommended)
 
