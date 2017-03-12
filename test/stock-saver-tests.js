@@ -11,43 +11,50 @@ const {TEST_DATABASE_URL} = require("../config/database");
 chai.use(chaiHttp);
 
 function generateUsers() {
-    const users = [
-                {
-                username: "fido",
-                password: "woof",
-                stocks: [
-                        {
-                        stock: "appl",
-                        price: 200,
-                        time: '3/10/2017, 11:49:21 AM',
-                        _id: "58bf9b6d5f5cb6470bedcb5e"
-                        }, {
-                        stock: "goog",
-                        price: 1000,
-                        time: '3/10/2017, 11:49:21 AM',
-                        _id: "58bf9b2d5f5bb6470bedcb5e"
-                        }
-                        ]
-                }, {
-                username: "toto",
-                password: "woof",
-                stocks: [
-                        {
-                        stock: "cat",
-                        price: 100,
-                        time: '3/10/2017, 11:49:21 AM',
-                        _id: "58bf9b6d5f5bb6470eedcb5e"
-                        }, {
-                        stock: "sbux",
-                        price: 75,
-                        time: '3/10/2017, 11:49:21 AM',
-                        _id: "58bf9b6d5f5bb6470bedcd5e"
-                        }
-                        ]
-                    }
-            ]
-            console.log("Creating database: ", users)
-            return User.insertMany(users);
+    // const users = [
+    //             {
+    //             username: "fido",
+    //             password: "woof",
+    //             stocks: [
+    //                     {
+    //                     stock: "appl",
+    //                     price: 200,
+    //                     time: '3/10/2017, 11:49:21 AM',
+    //                     _id: "58bf9b6d5f5cb6470bedcb5e"
+    //                     }, {
+    //                     stock: "goog",
+    //                     price: 1000,
+    //                     time: '3/10/2017, 11:49:21 AM',
+    //                     _id: "58bf9b2d5f5bb6470bedcb5e"
+    //                     }
+    //                     ]
+    //             }, {
+    //             username: "toto",
+    //             password: "woof",
+    //             stocks: [
+    //                     {
+    //                     stock: "cat",
+    //                     price: 100,
+    //                     time: '3/10/2017, 11:49:21 AM',
+    //                     _id: "58bf9b6d5f5bb6470eedcb5e"
+    //                     }, {
+    //                     stock: "sbux",
+    //                     price: 75,
+    //                     time: '3/10/2017, 11:49:21 AM',
+    //                     _id: "58bf9b6d5f5bb6470bedcd5e"
+    //                     }
+    //                     ]
+    //                 }
+    //         ]
+        let user1 = {
+            username: "hunter",
+            password: "meow"}
+         chai.request(app).post("/signup").send(user1).then(function(res) {
+            res.status(201).json({message: "test user created"})
+            // return User.insertMany(users);
+        }).catch(function () {
+            console.error("Test User Creation - Promise Rejected")
+        })
 }
 
 function tearDownDb() {
@@ -85,13 +92,13 @@ describe("Stock Saver API", function() {
         // });
     });
 
-    describe("GET endpoint", function() {
-        // it("should return a user", function() {
-        //     return chai.request(app).get("/users/").send({username: "fido", password: "woof"}).then(function(res) {
-        //         res.should.have.status(200);
-        //         res.should.be.json;
-        //     });
-        // });
+    describe("LOGIN endpoint", function() {
+        it("should login a user", function() {
+            return chai.request(app).get("/login").send({username: "hunter", password: "meow"}).then(function(res) {
+                res.should.have.status(200);
+                res.should.be.html;
+            });
+        });
     });
 
     describe("SIGNUP endpoint", function() {
@@ -101,13 +108,23 @@ describe("Stock Saver API", function() {
                 password: "woof"
             };
             return chai.request(app).post("/signup").send(newUser).then(function(res) {
-                console.log('TEST SIGNUP RES', res)
-                // res.should.have.status(201);
-                // res.should.be.json;
+                res.should.have.status(200);
+                res.should.be.html;
                 // res.should.include("username");
             });
         });
-    })
+        it("should return an error if user already exists", function() {
+            const duplicateUser = {
+                username: "spot",
+                password: "woof"
+            };
+            return chai.request(app).post("/signup").send(duplicateUser).then(function(res) {
+                // res.should.have.status(200);
+                res.should.be.html;
+                // res.should.include("exists");
+            });
+        });
+    });
 
     describe("LOGIN endpoint", function() {
         it("should login a user", function() {
@@ -117,8 +134,12 @@ describe("Stock Saver API", function() {
 
     describe("LOGOUT endpoint", function() {
         it("should logout a user", function() {
-
-        })
+            return chai.request(app).get("/logout").then(function(res) {
+                res.should.have.status(204);
+                // res.should.be.html;
+                // res.should.include("exists");
+            });
+        });
     })
 
     describe("DELETE endpoint", function() {

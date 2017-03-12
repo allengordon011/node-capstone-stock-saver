@@ -49,7 +49,7 @@ app.get('/stocksaver', isLoggedIn, function(req, res) {
 app.get('/logout', function(req, res) {
     req.logout();
     req.session.destroy();
-    return res.redirect('/');
+    return res.redirect(204, '/');
 });
 
 //user signup
@@ -61,10 +61,12 @@ app.post('/signup', passport.authenticate('local-signup', {
 
 //user login
 app.post('/login', passport.authenticate('local-login', {
-    successRedirect: '/stocksaver',
+    // successRedirect: '/stocksaver',
     failureRedirect: '/login',
     failureFlash: true
-}))
+}), function(req, res) {
+    res.redirect('/stocksaver');
+})
 
 //user delete
 app.delete('/destroy', isLoggedIn, function(req, res, next) {
@@ -169,7 +171,7 @@ passport.use('local-signup', new LocalStrategy(function(username, password, done
             console.error('User already exists');
             return done(null, false);
         }
-        console.log('Creating user');
+        // console.log('Creating user');
         return User.hashPassword(password)
 
     }).then(hash => {
