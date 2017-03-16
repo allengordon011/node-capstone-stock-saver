@@ -10,7 +10,7 @@ $('#js-signup-form').submit(function(event) {
     $('input, textarea').val('');
 
     $.ajax({type: 'POST', data: JSON.stringify(obj), url: '/signup', contentType: "application/json", dataType: "json"}).then(function(res) {
-        console.log('RES: ', res)
+        // console.log('RES: ', res)
         window.location = '/stocksaver.html';
     }).fail(function(err) {
         console.log('SIGNUP FAIL')

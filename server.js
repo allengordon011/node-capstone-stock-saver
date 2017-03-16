@@ -211,14 +211,14 @@ passport.use('local-login', new LocalStrategy(function(username, password, done)
 // assumes runServer has run and set `server` to a server object
 let server;
 
-function runServer() {
+function runServer(databaseUrl=DATABASE_URL, port=PORT) {
     return new Promise((resolve, reject) => {
-        mongoose.connect(DATABASE_URL, err => {
+        mongoose.connect(databaseUrl, err => {
             if (err) {
                 return reject(err);
             }
-            server = app.listen(PORT, () => {
-                console.log(`Your app is listening on port ${PORT}`);
+            server = app.listen(port, () => {
+                console.log(`Your app is listening on port ${port}. Your database is ${databaseUrl}.`);
                 resolve();
             }).on('error', err => {
                 mongoose.disconnect();
@@ -242,8 +242,6 @@ function closeServer() {
     });
 }
 
-// if server.js is called directly (aka, with `node server.js`), this block
-// runs. but we also export the runServer command so other code (for instance, test code) can start the server as needed.
 if (require.main === module) {
     runServer().catch(err => console.error(err));
 };
