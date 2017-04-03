@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Anton|News+Cycle|Roboto:300" rel="stylesheet">
 
     <link rel="stylesheet" href="/style.css">
@@ -17,12 +19,30 @@
 </head>
 
 <body>
-        <div class="col-sm-8 col-sm-offset-2">
+        <div class="flex-container">
             <div class="jumbotron text-center" id="jumbotron-home">
                 <h1>Stock Saver</h1>
                 <p class="lead">A financial stock search and save tool</p>
                 <a href="/login.html" class="btn btn-default"><span class="fa fa-sign-in"></span> Login</a>
                 <a href="/signup.html" class="btn btn-default"><span class="fa fa-user"></span> Signup</a>
+            </div>
+            <div class="features-container">
+                <div class="description-item">
+                    <span class="glyphicon glyphicon-user"></span>
+                    <h3>Create an Account</h3>
+                    <p>Users can create a password-protected user account.</p>
+                </div>
+                <div class="description-item">
+                    <span class="glyphicon glyphicon-search"></span>
+                    <h3>Search for Stocks</h3>
+                    <p>Users can research for recent stock prices.</p>
+                </div>
+                <div class="description-item">
+                    <span class="glyphicon glyphicon-floppy-disk"></span>
+                    <h3>Save Stock Prices</h3>
+                    <p>Search results can be saved to be compared to later prices.</p>
+                </div>
+            </div>
         </div>
         <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
         <script src="app.js"></script>

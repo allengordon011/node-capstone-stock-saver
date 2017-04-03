@@ -7,26 +7,81 @@ body {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    /*padding:20px;*/
     font-family: 'News Cycle', sans-serif;
-    padding-bottom: 150px;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    display: flex;
 }
 
-/*font-family: 'Roboto', sans-serif;*/
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 600px;
+    background-color: white;
+    padding: 0 0 35px;
+    min-height: 600px;
+}
+
+.flex-container-2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    padding: 15px 50px 35px;
+}
+
+.flex-container-3 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 600px;
+    background-color: white;
+    padding: 0 0 35px;
+    min-height: 600px;
+}
 
 .jumbotron {
-    margin: 35px auto 0px;
-    padding: 50px;
-    /*width: 475px;*/
+    margin: 25px 25px 0;
+    padding: 0 35px 15px;
+    background-color: white;
+    min-width: 350px;
 }
 
 #jumbotron-home {
-    margin: 100px auto 0px;
+    margin: 50px 25px 0 25px;
 }
 
-/*img {
-    width: 140px; height: 140px;
-}*/
+.features-container {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 0 15px;
+    margin: 0 25px;
+    background: white;
+    text-align: center;
+}
+
+.description-item {
+    order: 0;
+    flex: 0 1 auto;
+    align-self: auto;
+    margin: 15px 0;
+    max-width: 200px;
+    min-width: 161px;
+}
+
+.glyphicon {
+    font-size: 30px;
+}
+
+.demo-user {
+    font-size: 12px;
+    margin: 8px;
+    text-align: center;
+}
 
 .fa-sign-out {
     float: right;
@@ -54,9 +109,13 @@ td {
 }
 
 form {
-    margin: auto;
+    margin: 0 auto 5px;
     text-align: center;
-    width: 300px;
+    max-width: 300px;
+}
+
+input {
+    text-align: center;
 }
 
 placeholder {
@@ -66,8 +125,15 @@ placeholder {
 #js-stock-search {
     margin: auto;
     text-align: center;
+    font-size: 18px;
     width: 50px;
     padding: 0px;
+    -webkit-appearance: none;
+}
+
+#js-user {
+    font-weight: bold;
+    padding-top: 15px;
 }
 
 #js-logout {
@@ -79,9 +145,23 @@ placeholder {
 }
 
 .panel-footer {
-    margin: 0 auto 50px;
+    margin: 0 25px 20px;
+    padding: 15px 0 5px;
     text-align: center;
-    /*width: 475px;*/
+    background-color: white;
+}
+
+.panel-footer-2 {
+    margin: 0 25px 20px;
+    text-align: center;
+    background-color: white;
+}
+
+#results-container {
+    max-width: 600px;
+    max-width: 450px;
+    display: flex;
+    flex-direction: column;
 }
 
 #results {
@@ -89,14 +169,23 @@ placeholder {
     display: none;
 }
 
+#view-stocks-button {
+    margin: 0 0 10px;
+}
+
 #save-stocks-button {
     display: none;
+    width: 125px;
+    align-self: center;
+    margin-top: 15px;
 }
 
 #saved-stocks {
     display: none;
     margin: 15px;
+    padding: 15px 25px 0;
     font-style: italic;
+    border: #333333 1px solid;
 }
 
 #saved-stocks-empty {
@@ -119,6 +208,7 @@ placeholder {
 #delete-stock-button {
     padding: 0px;
     color: red;
+    margin: 0;
 }
 
 .alert {
@@ -135,25 +225,25 @@ ul {
 }
 
 .container-fluid {
-    background-color: #eee;
+    background-color: #333333;
+    color: white;
     text-align: center;
-    vertical-align: middle;
-    height: 135px;
-    top: 0
+    padding: 5px;
+    min-width: 600px;
 }
 
 #logout-container {
     width: 100%;
-    display: block;
-    padding-right: 0;
-    /*padding-bottom: 10px;*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #delete-container {
     width: 100%;
-    display: block;
-    padding-right: 0;
-    padding-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #delete-buttons {
@@ -163,9 +253,15 @@ ul {
 h1 {
     font-family: 'Anton', sans-serif;
     font-size: 60px;
+    letter-spacing: 0.1em;
     text-align: center;
-    padding-top: 25px;
+    padding-top: 35px;
     margin: 0;
+}
+
+h3 {
+    font-size: 1.5em;
+    margin-top: 10px;
 }
 
 #lead {
@@ -174,17 +270,67 @@ h1 {
     padding-right: 5px;
 }
 
-
-.affix {
-      top: 0;
-      width: 100%;
-  }
-
-.affix-top {
-width: 100%;
+hr {
+    margin-right: 25px;
+    margin-left: 25px;
 }
 
-.affix-bottom {
-position: absolute;
-width: 100%;
+@media (max-width: 600px) {
+    body {
+        height: 100%
+    }
+    h1 {
+        font-size: 48px;
+    }
+    .flex-container {
+        padding: 0 0 15px;
+        min-width: 300px;
+        max-width: 375px;
+        margin: 20px auto;
+        min-height: 550px;
+    }
+    .flex-container-2 {
+        padding: 15px;
+        max-width: 375px;
+        margin: 100px auto;
+    }
+    .flex-container-3 {
+        min-width: 300px;
+        max-width: 375px;
+        margin: 70px auto;
+        min-height: 550px;
+    }
+    .container-fluid {
+        min-width: 375px;
+    }
+    .description-item {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 10px auto;
+    }
+    #jumbotron-home {
+        margin: 15px 15px 0;
+    }
+    .features-container {
+        margin: 0 15px 15px;
+    }
+    #logout-container {
+        width: 87%;
+    }
+    #delete-container {
+        width: 87%;
+    }
+    #saved-stocks {
+        display: none;
+        margin: 15px 0;
+        padding: 15px 0 0;
+    }
+    .panel-footer {
+        padding: 15px 0 7px;
+    }
+    .panel-footer-2 {
+        margin: 0 2px;
+        padding: 0 0 7px;
+    }
 }

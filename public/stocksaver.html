@@ -14,19 +14,19 @@
     <link rel="stylesheet" href="/style.css">
   </head>
   <body>
+      <div class="flex-container-3">
       <div class="container-fluid" data-spy="affix">
           <h1>Stock Saver</h1>
             <p class="lead">An app to help you track your stocks.</p>
         </div>
 
-          <div class="col-sm-8 col-sm-offset-2">
               <div class="jumbotron text-center">
 
                   <section id="js-user"></section>
                   <form id="stock-search">
                       <div class="form-group">
                           <label>Stock price search</label>
-                      <input type="text" name="stock" class="form-control" placeholder="Enter company name/symbol" style="text-align:center">
+                      <input type="text" name="stock" class="form-control" placeholder="Enter stock symbol, e.g. 'goog'" style="text-align:center">
 
                     </div>
                       <div>
@@ -39,7 +39,7 @@
                       <button type="submit" id="save-stocks-button" class="btn btn-default">Save results</button>
               </div>
           </div>
-              <div class="panel-footer">
+              <div class="panel-footer-2">
                 <button type="submit" id="view-stocks-button" class="btn btn-default">View saved stocks</button>
                   <div id="saved-stocks">
                       <div id="saved-stocks-empty"><ul><li>You do not have any saved stocks yet.</li><ul></div>
