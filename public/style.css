@@ -1,3 +1,7 @@
+html {
+    height: 100%;
+}
+
 body {
     background: linear-gradient(
       rgba(0, 0, 0, 0.45),
@@ -137,11 +141,7 @@ placeholder {
 }
 
 #js-logout {
-    float: right;
-}
-
-#delete-user {
-    float: right;
+    margin-bottom: 15px;
 }
 
 .panel-footer {
@@ -277,7 +277,7 @@ hr {
 
 @media (max-width: 600px) {
     body {
-        height: 100%
+        display: block;
     }
     h1 {
         font-size: 48px;
@@ -297,7 +297,7 @@ hr {
     .flex-container-3 {
         min-width: 300px;
         max-width: 375px;
-        margin: 70px auto;
+        margin: 10% auto;
         min-height: 550px;
     }
     .container-fluid {
