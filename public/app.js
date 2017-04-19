@@ -1,8 +1,9 @@
 //signup user
 $('#js-signup-form').submit(function(event) {
+    $('.alert.alert-warning').text("");
     event.preventDefault();
     if((!event.target.username.value || !event.target.password.value)){
-        $('.alert.alert-warning').show(200).append('Please enter a username and a password')
+        $('.alert.alert-warning').show(200).append('Please enter a username and a password.')
     } else {
         let obj = {
             username: event.target.username.value,
@@ -25,9 +26,10 @@ $('#js-signup-form').submit(function(event) {
 
 //login user
 $('#js-login-form').on('submit', function(event) {
+    $('.alert.alert-warning').text("");
     event.preventDefault();
     if((!event.target.username.value || !event.target.password.value)){
-        $('.alert.alert-warning').show(200).append('Please enter a username and a password')
+        $('.alert.alert-warning').show(200).append('Please enter a username and a password.')
     } else {
         user = {
             username: event.target.username.value,
