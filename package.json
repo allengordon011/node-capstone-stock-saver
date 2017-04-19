@@ -4,7 +4,7 @@
   "description": "Financial stock price API",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "nodemon server.js",
     "test": "mocha ./test"
   },
   "dependencies": {
@@ -19,6 +19,7 @@
     "method-override": "^2.3.7",
     "mongoose": "^4.7.4",
     "morgan": "^1.7.0",
+    "nodemon": "^1.11.0",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "passport-google-oauth": "^1.0.0",

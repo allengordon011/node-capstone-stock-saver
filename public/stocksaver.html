@@ -20,13 +20,13 @@
             <p class="lead">An app to help you track your stocks.</p>
         </div>
 
-              <div class="jumbotron text-center">
+              <div class="jumbotron text-center" id="no-margin-border">
 
                   <section id="js-user"></section>
                   <form id="stock-search">
                       <div class="form-group">
                           <label>Stock price search</label>
-                      <input type="text" name="stock" class="form-control" placeholder="Enter stock symbol, e.g. 'goog'" style="text-align:center">
+                      <input type="text" name="stock" class="form-control" placeholder="Enter a stock symbol, e.g. 'goog'" style="text-align:center">
 
                     </div>
                       <div>
@@ -39,34 +39,36 @@
                       <button type="submit" id="save-stocks-button" class="btn btn-default">Save results</button>
               </div>
           </div>
-              <div class="panel-footer-2">
-                <button type="submit" id="view-stocks-button" class="btn btn-default">View saved stocks</button>
-                  <div id="saved-stocks">
-                      <div id="saved-stocks-empty"><ul><li>You do not have any saved stocks yet.</li><ul></div>
-                      <table class="table table-striped">
-                          <thead>
-                              <tr>
-                                  <th>STOCK</th>
-                                  <th>PRICE</th>
-                                  <th>TIME</th>
-                                  <th></th>
-                              </tr>
-                          </thead>
-                          <tbody id="stocks-table">
-                          </tbody>
-                      </table>
-                  </div>
+          <hr/>
+          <div class="panel-footer-2">
+            <button type="submit" id="view-stocks-button" class="btn btn-default">View saved stocks</button>
+              <div id="saved-stocks">
+                  <div id="saved-stocks-empty"><ul><li>You do not have any saved stocks yet.</li><ul></div>
+                  <table class="table table-striped">
+                      <thead>
+                          <tr>
+                              <th>STOCK</th>
+                              <th>PRICE</th>
+                              <th>TIME</th>
+                              <th></th>
+                          </tr>
+                      </thead>
+                      <tbody id="stocks-table">
+                      </tbody>
+                  </table>
               </div>
-              <div class="container" id="logout-container">
-        <button class="btn btn-primary" id="js-logout"><i class="fa fa-sign-out"></i> Logout</div>
-            <div class="container" id="delete-container">
+          </div>
+          <hr/>
+          <div class="container" id="logout-container">
+              <button class="btn btn-primary" id="js-logout"><i class="fa fa-sign-out"></i> Logout</div>
+        <div class="container" id="delete-container">
             <div id="delete-buttons">
                 <button class="btn btn-warning" id="confirm-user-delete"> Are you sure?
              <button class="btn btn-danger" id="do-user-delete"> Yes
               <button class="btn btn-success" id="cancel-user-delete"> No
              </div>
-                <button class="btn btn-primary" id="delete-user"><i class="fa fa-times" aria-hidden="true"></i> Delete Account
-                </div>
+            <button class="btn btn-primary" id="delete-user"><i class="fa fa-times" aria-hidden="true"></i> Delete Account
+        </div>
 
       </div>
           <script src="https://code.jquery.com/jquery-3.1.1.js"></script>

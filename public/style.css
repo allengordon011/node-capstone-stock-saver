@@ -12,10 +12,18 @@ body {
     -o-background-size: cover;
     background-size: cover;
     font-family: 'News Cycle', sans-serif;
-    height: 100vh;
+    height: 100%;
     justify-content: center;
     align-items: center;
     display: flex;
+    margin: 15px;
+}
+
+.demo-instr {
+    font-size: .75em;
+    font-style: italic;
+    color: orangered;
+    margin: 5px auto 25px;
 }
 
 .flex-container {
@@ -26,14 +34,20 @@ body {
     background-color: white;
     padding: 0 0 35px;
     min-height: 600px;
+    border-radius: 5px;
 }
 
 .flex-container-2 {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     background-color: white;
     padding: 15px 50px 35px;
+    min-width: 600px;
+    max-width: 90%;
+    min-height: 600px;
+    border-radius: 5px;
 }
 
 .flex-container-3 {
@@ -41,9 +55,10 @@ body {
     flex-direction: column;
     align-items: center;
     min-width: 600px;
+    min-height: 600px;
     background-color: white;
     padding: 0 0 35px;
-    min-height: 600px;
+    border-radius: 5px;
 }
 
 .jumbotron {
@@ -51,10 +66,12 @@ body {
     padding: 0 35px 15px;
     background-color: white;
     min-width: 350px;
+    border-bottom: 1px solid #ddd;
 }
 
 #jumbotron-home {
     margin: 50px 25px 0 25px;
+    padding: 0 0 50px;
 }
 
 .features-container {
@@ -62,8 +79,8 @@ body {
     flex: 1;
     flex-direction: column;
     align-items: center;
-    padding: 0 0 15px;
-    margin: 0 25px;
+    padding: 15px;
+    margin: 10px 25px;
     background: white;
     text-align: center;
 }
@@ -82,7 +99,9 @@ body {
 }
 
 .demo-user {
-    font-size: 14px;
+    font-size: .75em;
+    font-style: italic;
+    color: orangered;
     margin: 8px;
     text-align: center;
 }
@@ -101,6 +120,18 @@ body {
     color: red;
 }
 
+.btn-default {
+    width: 150px;
+    height: 70px;
+    font-size: 1.2em;
+    line-height: 56px;
+    margin: 0 5px;
+}
+
+a {
+    color: #428bca;
+}
+
 th {
     font-weight: bold;
     text-align: center;
@@ -116,6 +147,16 @@ form {
     margin: 0 auto 5px;
     text-align: center;
     max-width: 300px;
+}
+
+#form-button {
+    background-color: #428bca;
+    color: white;
+    font-size: .8em;
+    line-height: 20px;
+    height: 35px;
+    width: 100px;
+    margin: 27px auto 0;
 }
 
 input {
@@ -149,10 +190,11 @@ placeholder {
     padding: 15px 0 5px;
     text-align: center;
     background-color: white;
+    border: 0;
 }
 
 .panel-footer-2 {
-    margin: 0 25px 20px;
+    margin: 0 25px;
     text-align: center;
     background-color: white;
 }
@@ -164,28 +206,40 @@ placeholder {
     flex-direction: column;
 }
 
+#no-margin-border {
+    border: 0;
+}
+
 #results {
     margin-top: 10px;
     display: none;
 }
 
 #view-stocks-button {
-    margin: 0 0 10px;
+    height: 50px;
+    padding: 5px;
+    line-height: 35px;
+    font-size: 1.25em;
 }
 
 #save-stocks-button {
     display: none;
-    width: 125px;
+    width: 160px;
+    font-size: .9em;
+    height: 50px;
     align-self: center;
     margin-top: 15px;
+    line-height: 36px;
 }
 
 #saved-stocks {
     display: none;
-    margin: 15px;
-    padding: 15px 25px 0;
+    margin: 25px 0;
+    padding: 15px 0 0;
     font-style: italic;
-    border: #333333 1px solid;
+    border: #428bca 1px solid;
+    border-radius: 5px;
+    min-width: 450px;
 }
 
 #saved-stocks-empty {
@@ -215,6 +269,8 @@ placeholder {
     display: none;
     margin-top: 10px;
     margin-bottom: none !important;
+    font-size: .8em;
+    line-height: 1em;
 }
 
 ul {
@@ -230,6 +286,7 @@ ul {
     text-align: center;
     padding: 5px;
     min-width: 600px;
+    border-radius: 5px 5px 0 0;
 }
 
 #logout-container {
@@ -256,7 +313,7 @@ h1 {
     letter-spacing: 0.1em;
     text-align: center;
     padding-top: 35px;
-    margin: 0;
+    margin: 0 0 5px;
 }
 
 h3 {
@@ -264,15 +321,10 @@ h3 {
     margin-top: 10px;
 }
 
-#lead {
-    font-size: 12px;
-    text-align: right;
-    padding-right: 5px;
-}
-
 hr {
-    margin-right: 25px;
-    margin-left: 25px;
+    border-top: 1px solid #428bca;
+    width: 80%;
+    margin: 25px auto;
 }
 
 @media (max-width: 600px) {
@@ -282,26 +334,58 @@ hr {
     h1 {
         font-size: 48px;
     }
+    .btn-default {
+        width: 100px;
+        height: 50px;
+        font-size: 1em;
+        line-height: 35px;
+        margin: 0 2px;
+    }
+    #save-stocks-button {
+        font-size: .9em;
+        height: 45px;
+        line-height: 22px;
+    }
+    #view-stocks-button {
+        width: 160px;
+        height: 45px;
+        padding: 5px;
+        line-height: 5px;
+        font-size: 1.3em;
+        margin-bottom: 15px;
+    }
+    .lead {
+        margin-bottom: 5px;
+    }
+    .demo-instr {
+        margin: 5px auto 25px;
+        font-size: .6em
+    }
+    .demo-user {
+        font-size: .6em
+    }
     .flex-container {
         padding: 0 0 15px;
-        min-width: 300px;
-        max-width: 375px;
+        min-width: 375px;
+        /*max-width: 375px;*/
         margin: 20px auto;
         min-height: 550px;
     }
     .flex-container-2 {
         padding: 15px;
-        max-width: 375px;
+        min-width: 375px;
+        align-self: center;
         margin: 100px auto;
+        min-height: 550px;
     }
     .flex-container-3 {
-        min-width: 300px;
-        max-width: 375px;
+        min-width: 375px;
+        /*max-width: 375px;*/
         margin: 10% auto;
         min-height: 550px;
     }
     .container-fluid {
-        min-width: 375px;
+        min-width: 100%;
     }
     .description-item {
         flex-direction: column;
@@ -311,6 +395,7 @@ hr {
     }
     #jumbotron-home {
         margin: 15px 15px 0;
+        padding: 0 0 30px;
     }
     .features-container {
         margin: 0 15px 15px;
@@ -321,10 +406,14 @@ hr {
     #delete-container {
         width: 87%;
     }
+    #results {
+        font-size: .9em;
+    }
     #saved-stocks {
         display: none;
         margin: 15px 0;
         padding: 15px 0 0;
+        min-width: 360px;
     }
     .panel-footer {
         padding: 15px 0 7px;
