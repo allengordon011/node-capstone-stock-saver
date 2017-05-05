@@ -145,12 +145,13 @@ $('#stock-search').submit(function(event) {
     }
 })
 
-//save stocks
+//save stock
 $('#save-stocks-button').on('click', function(event) {
     $('#saved-stocks-empty').hide()
     $.ajax({type: 'POST', data: JSON.stringify(obj), url: '/stocksaver/stocks', contentType: "application/json", dataType: "json"}).then(function(res) {
         console.log('save res: ', res)
             $('#stocks-table').prepend( `<tr><td>${obj.stock}</td><td>$${obj.price}</td><td>${obj.time}</td><td><a class="btn btn-small" id="delete-stock-button" value="${obj._id}"><i class="fa fa-times" aria-hidden="true"></i> </a></td></tr>`)
+            $('#saved-stocks').show(200)
     }).fail(function(err) {
         console.log('AJAX FAIL')
         $('.alert.alert-warning').toggle(300).html('ERROR')
@@ -176,6 +177,11 @@ $('#view-stocks-button').on('click', function() {
             $('#stocks-table').html(`${stocksList}`)
         }
     })
+});
+
+//hide saved stocks
+$('#hide-stocks-button').on('click', function() {
+            $('#saved-stocks').hide(200)
 });
 
 //delete saved stock

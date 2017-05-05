@@ -12,7 +12,7 @@ body {
     -o-background-size: cover;
     background-size: cover;
     font-family: 'News Cycle', sans-serif;
-    height: 100%;
+    min-height: 100%;
     justify-content: center;
     align-items: center;
     display: flex;
@@ -182,7 +182,7 @@ placeholder {
 }
 
 #js-logout {
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 }
 
 .panel-footer {
@@ -220,6 +220,15 @@ placeholder {
     padding: 5px;
     line-height: 35px;
     font-size: 1.25em;
+}
+
+#hide-stocks-button {
+    height: 50px;
+    padding: 5px;
+    line-height: 35px;
+    font-size: 1.25em;
+    margin: 10px 0 25px;
+    min-width: 160px;
 }
 
 #save-stocks-button {
