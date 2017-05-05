@@ -1,13 +1,11 @@
 const express = require('express');
 const path = require('path');
-// const favicon = require('serve-favicon');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const app = express();
 const jsonParser = require('body-parser').json();
 
 const {User} = require('./models/user');
-// const {router: usersRouter} = require('./routes');
 
 const cookieParser = require('cookie-parser');
 const passport = require('passport'),
@@ -15,11 +13,8 @@ const passport = require('passport'),
 const session = require('express-session');
 var flash = require('connect-flash');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(morgan('common'));
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.use(jsonParser);
 app.use(cookieParser('hunter'));
 app.use(session({
